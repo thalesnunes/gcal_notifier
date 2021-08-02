@@ -1,15 +1,25 @@
 from .config_reader import init_config
-from .event_getter import make_conn
+from .event_getter import load_calendars
 from .event_scheduler import *
-from .utils import DEFAULT_PARAMS
 
 class SimpleGCalendarNotifier:
 
     def __init__(self):
-        self.config = init_config()
-        self.calendar = make_conn().get_events(**DEFAULT_PARAMS, **self.config['DEFAULT'])
+
+        self.config, self.general_params, self.calendar_params = init_config()
+        self.calendars = load_calendars(self.general_params, self.calendar_params)
+        self.show_calendar_params()
         self.show_events()
+        self.show_config()
+
+    def show_calendar_params(self):
+        print(self.calendar_params)
 
     def show_events(self):
-        for event in self.calendar:
-            print(event)
+        for name, calendar in self.calendars.items():
+            print(name)
+            for event in calendar:
+                print(event)
+
+    def show_config(self):
+        print(self.config['CALENDAR1'].getlist('default_reminder'))

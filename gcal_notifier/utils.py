@@ -3,8 +3,10 @@ from datetime import datetime, timedelta
 import simpleaudio as sa
 
 CONFIG = os.path.expanduser('~/.config/gcal_notifier')
-DEFAULT_PARAMS = {'time_min': datetime.now(),
-                  'time_max': datetime.now()+timedelta(days=1)}
+GENERAL_PARAMS = {'time_min': datetime.now(),
+                  'time_max': datetime.now()+timedelta(days=1),
+                  'order_by': 'startTime',
+                  'single_events': True}
 
 def validate_sound_file(path: str):
     assert path.endswith('.wav')
