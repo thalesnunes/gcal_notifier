@@ -1,6 +1,6 @@
 from .config_reader import init_config
 from .event_getter import load_calendars
-from .event_scheduler import *
+from .event_reminder import *
 
 class SimpleGCalendarNotifier:
 
@@ -10,7 +10,6 @@ class SimpleGCalendarNotifier:
         self.calendars = load_calendars(self.general_params, self.calendar_params)
         self.show_calendar_params()
         self.show_events()
-        self.show_config()
 
     def show_calendar_params(self):
         print(self.calendar_params)
@@ -20,6 +19,3 @@ class SimpleGCalendarNotifier:
             print(name)
             for event in calendar:
                 print(event)
-
-    def show_config(self):
-        print(self.config['CALENDAR1'].getlist('default_reminder'))
