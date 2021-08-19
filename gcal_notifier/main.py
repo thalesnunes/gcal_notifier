@@ -2,12 +2,15 @@ from .config_reader import init_config
 from .event_getter import load_calendars
 from .event_reminder import *
 
-class SimpleGCalendarNotifier:
 
+class SimpleGCalendarNotifier:
     def __init__(self):
 
         self.config, self.general_params, self.calendar_params = init_config()
-        self.calendars = load_calendars(self.general_params, self.calendar_params)
+        self.calendars = load_calendars(
+                self.general_params,
+                self.calendar_params
+            )
         self.show_calendar_params()
         self.show_events()
 
