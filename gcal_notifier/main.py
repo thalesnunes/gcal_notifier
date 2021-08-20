@@ -1,24 +1,24 @@
 from .config_reader import init_config
-from .event_getter import load_calendars
+from .event_getter import load_calendars, load_events
+from .event_loader import load_saved_events
 from .event_reminder import *
+from .event_saver import save_events
 
 
-class SimpleGCalendarNotifier:
+class SimpleGCalendarGetter:
+
     def __init__(self):
-
         self.config, self.general_params, self.calendar_params = init_config()
         self.calendars = load_calendars(
                 self.general_params,
                 self.calendar_params
             )
-        self.show_calendar_params()
-        self.show_events()
+        self.events = load_events(self.calendars)
+        save_events(self.events)
 
-    def show_calendar_params(self):
-        print(self.calendar_params)
 
-    def show_events(self):
-        for name, calendar in self.calendars.items():
-            print(name)
-            for event in calendar:
-                print(event)
+class SimpleGCalendarNotifier:
+
+    def __init__(self):
+        self.events = load_saved_events()
+        print(self.events)

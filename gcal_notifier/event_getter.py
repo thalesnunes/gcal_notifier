@@ -1,6 +1,7 @@
-from typing import Any, Dict
+from typing import Any, Dict, List
 from .utils import CONFIG
 
+from gcsa.event import Event
 from gcsa.google_calendar import GoogleCalendar
 
 
@@ -27,3 +28,13 @@ def load_calendars(
             **general_params
         )
     return calendars
+
+
+def load_events(calendars: List[GoogleCalendar]) -> List[Event]:
+
+    events = []
+    for name, calendar in calendars.items():
+        for event in calendar:
+            events.append(event)
+
+    return events
