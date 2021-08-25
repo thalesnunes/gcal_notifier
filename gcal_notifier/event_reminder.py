@@ -22,14 +22,15 @@ class SimpleGCalendarNotifier:
     def search_reminders(self):
         now = datetime.now().astimezone()
         for event in self.events:
-            if event['start'] > now:
+            start = event['start']
+            if now > start + timedelta(minutes=1):
                 continue
             for reminder in event['reminders']:
-                if now < event['start'] - timedelta(minutes=reminder):
+                if now < start - timedelta(minutes=reminder):
                     return
                 elif (
-                    now >= event['start'] - timedelta(minutes=reminder)
-                    and now < event['start'] - timedelta(minutes=reminder+1)
+                    now >= start - timedelta(minutes=reminder)
+                    and now < start - timedelta(minutes=reminder-1)
                 ):
                     cmd = self.create_command(event, event.get('cmd', self.CMD))
                     self.run_notify(cmd)
