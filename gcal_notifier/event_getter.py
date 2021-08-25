@@ -1,3 +1,5 @@
+from configparser import ConfigParser
+from pathlib import Path
 from typing import Any, Dict, List
 from .utils import CONFIG
 
@@ -5,36 +7,60 @@ from gcsa.event import Event
 from gcsa.google_calendar import GoogleCalendar
 
 
-def make_conn(
-    calendar: str = "primary", credentials: str = CONFIG + "/credentials.json"
-) -> GoogleCalendar:
+class SimpleGCalendarGetter:
+    config: ConfigParser
+    general_params: Dict[str, Any]
+    calendar_params: Dict[str, Any]
+    calendars: Dict[str, GoogleCalendar]
+    events: List[Dict[str, Event]]
 
-    return GoogleCalendar(calendar=calendar, credentials_path=credentials)
+    def __init__(
+            self,
+            general_params: Dict[str, Any],
+            calendar_params: Dict[str, Any]
+            ):
+        self.general_params = general_params
+        self.calendar_params = calendar_params
+        self.load_calendars()
+        self.load_events()
 
+    def load_calendars(self):
+        self.calendars = {}
+        new_cal_params = {}
+        for label, params in self.calendar_params.items():
+            conn_params = {
+                    k: params[k] for k in params
+                    if k in ["calendar", "credentials"]
+            }
+            if "name" not in params:
+                params["name"] = "Calendar"
+            else:
+                label = params["name"]
+            self.calendars[params["name"]] = self.make_conn(
+                                                **conn_params
+                                            ).get_events(**self.general_params)
+            new_cal_params[label] = params
+        self.calendar_params = new_cal_params
 
-def load_calendars(
-    general_params: Dict[str, Any], calendar_params: Dict[str, dict]
-) -> Dict[str, GoogleCalendar]:
+    def set_reminders(self, event: Event):
+        if event.default_reminders:
+            event_calendar = self.calendar_params[event.calendar]
+            default_rem = event_calendar.get('default_reminders', [])
+            event.reminders = sorted(default_rem, reverse=True)
+        else:
+            # TODO: implement when not default_reminders
+            pass
 
-    calendars = {}
-    for _, params in calendar_params.items():
-        conn_params = {
-                k: params[k] for k in params
-                if k in ["calendar", "credentials"]
-        }
-        if "name" not in params:
-            params["name"] = "Calendar"
-        calendars[params["name"]] = make_conn(**conn_params).get_events(
-            **general_params
-        )
-    return calendars
+    def load_events(self):
+        self.events = []
+        for name, calendar in self.calendars.items():
+            for event in calendar:
+                event.calendar = name
+                self.set_reminders(event)
+                self.events.append(event)
 
-
-def load_events(calendars: List[GoogleCalendar]) -> List[Event]:
-
-    events = []
-    for name, calendar in calendars.items():
-        for event in calendar:
-            events.append(event)
-
-    return events
+    @staticmethod
+    def make_conn(
+        calendar: str = "primary", credentials: Path = CONFIG / "credentials.json"
+    ) -> GoogleCalendar:
+        return GoogleCalendar(calendar=calendar, credentials_path=credentials)

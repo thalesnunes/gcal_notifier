@@ -1,25 +1,45 @@
-from datetime import datetime
+from datetime import datetime, date, time
 import json
 import os
 from pathlib import Path
-from typing import Dict, List
+from typing import Any, Dict, List
 
 from gcsa.event import Event
 
 from .utils import CONFIG
 
-def event_to_dict(event: Event):
+
+def event_to_dict(event: Event) -> Dict[str, Any]:
     return event.__dict__
 
 
-def events_to_json(events: List[Event]) -> List[Dict]:
+def events_to_json(events: List[Event]) -> List[Dict[str, Any]]:
     return list(map(event_to_dict, events))
 
 
-def save_events(events: List[Event], file_path: str = CONFIG+'/tmp/events.json'):
+def date_to_datetime(date_obj: date) -> datetime:
+    tzinfo = datetime.utcnow().astimezone().tzinfo
+    return datetime.combine(date_obj, time(tzinfo=tzinfo))
+
+
+def event_sorter(event: Dict[str, Any]) -> datetime:
+    start = event.get('start')
+    if not isinstance(start, datetime):
+        event['start'] = date_to_datetime(start)
+        event['end'] = date_to_datetime(event.get('end'))
+    return event.get('start')
+
+
+def transform_events(events: List[Event]) -> Dict[str, Any]:
 
     json_events = events_to_json(events)
-    json_events.sort(key=lambda event: event.get('start'))
+    json_events.sort(key=event_sorter)
+    return json_events
+
+
+def save_events(events: List[Event], file_path: str = CONFIG/'tmp'/'events.json'):
+
+    json_events = transform_events(events)
 
     file_path = Path(file_path)
     os.makedirs(file_path.parent, exist_ok=True)

@@ -1,5 +1,6 @@
 import os
-from typing import Tuple
+from pathlib import Path
+from typing import Any, Dict, Tuple
 from configparser import ConfigParser
 
 from .utils import CONFIG, GENERAL_PARAMS
@@ -39,7 +40,7 @@ def merge_calendars(config: ConfigParser) -> dict:
             "name": cal.get,
             "credentials": lambda k: os.path.expanduser(cal.get(k)),
             "calendar": cal.get,
-            "default_reminder": cal.getlist,
+            "default_reminders": cal.getlist,
         }
 
         calendar_params[calendar] = {k: func_types[k](k) for k in cal}
@@ -47,12 +48,12 @@ def merge_calendars(config: ConfigParser) -> dict:
 
 
 def init_config(
-    config_path: str = CONFIG + "/config.ini",
-) -> Tuple[ConfigParser, dict, dict]:
+    config_path: Path = CONFIG / "config.ini",
+) -> Tuple[Dict[str, Any], Dict[str, Any]]:
 
     config = ConfigParser(converters={"list": parse_int_list})
     config.read(config_path)
     validate_config(config)
     general_params = merge_general(config)
     calendar_params = merge_calendars(config)
-    return config, general_params, calendar_params
+    return general_params, calendar_params

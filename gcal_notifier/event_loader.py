@@ -6,9 +6,9 @@ from typing import Any, List, Dict
 from .utils import CONFIG
 
 
-def load_events_file(path: str = CONFIG+'/tmp/events.json') -> List[Dict[str, Any]]:
+def load_events_file(path: Path = CONFIG / 'tmp' / 'events.json') -> List[Dict[str, Any]]:
 
-    with open(Path(path), 'r') as json_file:
+    with open(path, 'r') as json_file:
         json_events = json.load(json_file)
 
     return json_events
