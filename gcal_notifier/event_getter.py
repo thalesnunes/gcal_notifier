@@ -5,6 +5,7 @@ from gcal_notifier.utils import CONFIG
 
 from gcsa.event import Event
 from gcsa.google_calendar import GoogleCalendar
+from google.auth.exceptions import RefreshError
 
 
 class SimpleGCalendarGetter:
@@ -64,4 +65,8 @@ class SimpleGCalendarGetter:
         calendar: str = "primary",
         credentials: Path = CONFIG / "credentials.json"
     ) -> GoogleCalendar:
-        return GoogleCalendar(calendar=calendar, credentials_path=credentials)
+        try:
+            return GoogleCalendar(calendar=calendar, credentials_path=credentials)
+        except RefreshError:
+            CONFIG/"token.pickle".unlink()
+            return GoogleCalendar(calendar=calendar, credentials_path=credentials)
