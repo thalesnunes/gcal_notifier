@@ -68,5 +68,5 @@ class SimpleGCalendarGetter:
         try:
             return GoogleCalendar(calendar=calendar, credentials_path=credentials)
         except RefreshError:
-            CONFIG/"token.pickle".unlink()
+            (CONFIG/"token.pickle").unlink()
             return GoogleCalendar(calendar=calendar, credentials_path=credentials)
