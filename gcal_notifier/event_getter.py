@@ -63,7 +63,7 @@ class SimpleGCalendarGetter:
     @staticmethod
     def make_conn(
         calendar: str = "primary",
-        credentials: Path = CONFIG / "credentials.json"
+        credentials: Path = CONFIG / "default" / "credentials.json"
     ) -> GoogleCalendar:
         try:
             return GoogleCalendar(calendar=calendar, credentials_path=credentials)
