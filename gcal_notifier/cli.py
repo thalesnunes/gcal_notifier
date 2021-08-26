@@ -29,4 +29,6 @@ def cli():
     parser = init_parser()
     args = parser.parse_args()
 
+    validate_args(args)
+
     return args
