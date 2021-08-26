@@ -1,7 +1,7 @@
 from configparser import ConfigParser
 from pathlib import Path
 from typing import Any, Dict, List
-from .utils import CONFIG
+from gcal_notifier.utils import CONFIG
 
 from gcsa.event import Event
 from gcsa.google_calendar import GoogleCalendar
@@ -45,7 +45,7 @@ class SimpleGCalendarGetter:
     def set_reminders(self, event: Event):
         if event.default_reminders:
             event_calendar = self.calendar_params[event.calendar]
-            default_rem = event_calendar.get('default_reminders', [])
+            default_rem = event_calendar.get("default_reminders", [])
             event.reminders = sorted(default_rem, reverse=True)
         else:
             # TODO: implement when not default_reminders
@@ -61,6 +61,7 @@ class SimpleGCalendarGetter:
 
     @staticmethod
     def make_conn(
-        calendar: str = "primary", credentials: Path = CONFIG / "credentials.json"
+        calendar: str = "primary",
+        credentials: Path = CONFIG / "credentials.json"
     ) -> GoogleCalendar:
         return GoogleCalendar(calendar=calendar, credentials_path=credentials)

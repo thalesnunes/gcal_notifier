@@ -17,7 +17,7 @@ def validate_sound_file(wav_file: str) -> bool:
     return wav_file.endswith(".wav")
 
 
-def make_sound(sound_path: Path = ROOT_DIR / 'resources' / 'pop.wav'):
+def make_sound(sound_path: Path = ROOT_DIR / "resources" / "pop.wav"):
     sound_file = str(sound_path.absolute())
     if validate_sound_file(sound_file):
         wave_obj = sa.WaveObject.from_wave_file(sound_file)

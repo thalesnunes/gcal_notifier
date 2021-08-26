@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import Any, Dict, Tuple
 from configparser import ConfigParser
 
-from .utils import CONFIG, GENERAL_PARAMS
+from gcal_notifier.utils import CONFIG, GENERAL_PARAMS
 
 
 def parse_int_list(input: str) -> list:
@@ -30,8 +30,7 @@ def merge_general(config: ConfigParser) -> dict:
 def merge_calendars(config: ConfigParser) -> dict:
 
     calendar_names = [
-        calendar for calendar in config.sections()
-        if calendar.startswith("CALENDAR")
+        calendar for calendar in config.sections() if calendar.startswith("CALENDAR")
     ]
     calendar_params = {}
     for calendar in calendar_names:
