@@ -14,7 +14,7 @@ def init_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "command",
-        metavar="[get | remind]",
+        metavar="[get|remind]",
         help='Use "get" to get events and "remind" to run reminders',
     )
     return parser
