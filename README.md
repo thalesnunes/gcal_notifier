@@ -56,7 +56,7 @@ Note: this section was copied and pasted from the [gcsa](https://google-calendar
 3. [Create a OAuth client ID credential](https://developers.google.com/workspace/guides/create-credentials#create_a_oauth_client_id_credential)
 and download the `credentials.json` file
 
-4. Put downloaded `credentials.json` file into `~/.config/gcal_notifier/`
+4. Put downloaded `credentials.json` file into `~/.config/gcal_notifier/default`
 
 See more options in [Authentication](https://google-calendar-simple-api.readthedocs.io/en/latest/authentication.html#authentication).
 
