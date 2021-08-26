@@ -32,12 +32,12 @@ Usage
 
 ```sh
 gcal_notifier [get|remind]
-usage: gcal_notifier [-h] [get | remind]
+usage: gcal_notifier [-h] [get|remind]
 
 A simple and lightweight GoogleCalendar notifier for Linux
 
 positional arguments:
-  [get | remind]  Use "get" to get events and "remind" to run reminders
+  [get|remind]  Use "get" to get events and "remind" to run reminders
 
 optional arguments:
   -h, --help      show this help message and exit
@@ -80,7 +80,7 @@ that you can fetch events in a different interval that you check for reminders.
 My personal preference, for example, is:
 ```sh
 */10 * * * *  gcal_notifier get
-* * * * *  gcal_notifier get
+* * * * *  gcal_notifier remind
 ```
 So it runs every 10 minutes to fetch events, but looks for reminders every minute.
 
@@ -108,7 +108,7 @@ calendar = example@gmail.com
 # Reminders to your events, up to 5 integers separated by commas. Default is None
 default_reminders = 10,0
 # Path to the credentials file. Default is ~/.config/gcal_notifier/credentials.json
-# credentials = ~/.config/gcal_notifier/credentials_labi.json
+# credentials = ~/.config/gcal_notifier/credentials_file.json
 
 [CALENDAR2]
 name = NAME2
@@ -117,8 +117,8 @@ default_reminders = 10,0
 credentials = ~/.config/gcal_notifier/credentials_other_account.json
 
 [CALENDAR3]
-name = Poli
-calendar = c_8in466sr6p32o9l1omb27r37j0@group.calendar.google.com
+name = NAME3
+calendar = other@gmail.com
 .
 .
 .
