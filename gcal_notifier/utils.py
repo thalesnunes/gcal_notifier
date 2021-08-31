@@ -3,7 +3,7 @@ from pathlib import Path
 from datetime import datetime, timedelta
 import simpleaudio as sa
 
-ROOT_DIR = Path(__file__).parent.parent
+ROOT_DIR = Path(__file__).parent
 CONFIG = Path(os.path.expanduser("~/.config/gcal_notifier"))
 GENERAL_PARAMS = {
     "time_min": datetime.now(),
