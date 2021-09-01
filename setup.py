@@ -14,7 +14,7 @@ with open(ROOT_DIR / "requirements.txt", "r") as requirements_file:
 setup(
     name="gcal_notifier",
     description="A simple and lightweight GoogleCalendar notifier for Linux",
-    version="1.0.1",
+    version="1.0.2",
     packages=find_packages(),
     install_requires=all_reqs,
     package_data={'gcal_notifier': ['resources/pop.wav']},
