@@ -8,5 +8,6 @@ gcsa = "*"
 simpleaudio = "*"
 
 [dev-packages]
+pytest = "*"
 
 [requires]
