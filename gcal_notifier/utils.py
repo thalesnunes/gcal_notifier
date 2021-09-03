@@ -28,7 +28,7 @@ def make_sound(sound_path: Path = ROOT_DIR / "resources" / "pop.wav"):
         wave_obj.play()
 
 
-def run_notify(command: str):
+def run_notify(command: str = CMD):
     subprocess.run(shlex.split(command))
     # TODO: implement configurable notification sound
     make_sound()

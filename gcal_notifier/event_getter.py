@@ -1,7 +1,7 @@
 from configparser import ConfigParser
 from pathlib import Path
 from typing import Any, Dict, List
-from gcal_notifier.utils import CONFIG
+from gcal_notifier.utils import CONFIG, run_notify
 
 from gcsa.event import Event
 from gcsa.google_calendar import GoogleCalendar
@@ -38,6 +38,7 @@ class SimpleGCalendarGetter:
             else:
                 label = params["name"]
             self.calendars[params["name"]] = self.make_conn(
+                                                name=params["name"],
                                                 **conn_params
                                             ).get_events(**self.general_params)
             new_cal_params[label] = params
@@ -62,6 +63,7 @@ class SimpleGCalendarGetter:
 
     @staticmethod
     def make_conn(
+        name: str,
         calendar: str = "primary",
         credentials: Path = CONFIG / "default" / "credentials.json"
     ) -> GoogleCalendar:
@@ -69,4 +71,5 @@ class SimpleGCalendarGetter:
             return GoogleCalendar(calendar=calendar, credentials_path=credentials)
         except RefreshError:
             (CONFIG/"token.pickle").unlink()
+            run_notify(f'notify-send -u critical -a GoogleCalendar {calendar} "You have to authorize this calendar again!"')
             return GoogleCalendar(calendar=calendar, credentials_path=credentials)
