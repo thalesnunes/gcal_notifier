@@ -70,6 +70,6 @@ class SimpleGCalendarGetter:
         try:
             return GoogleCalendar(calendar=calendar, credentials_path=credentials)
         except RefreshError:
-            (CONFIG/"token.pickle").unlink()
-            run_notify(f'notify-send -u critical -a GoogleCalendar {calendar} "You have to authorize this calendar again!"')
+            (credentials.parent / "token.pickle").unlink()
+            run_notify(f'notify-send -u critical -a GoogleCalendar {calendar} "You have to authorize the credentials inside {credentials} again!"')
             return GoogleCalendar(calendar=calendar, credentials_path=credentials)
