@@ -1,6 +1,9 @@
+from datetime import datetime, timedelta
 import os
 from pathlib import Path
-from datetime import datetime, timedelta
+import shlex
+import subprocess
+
 import simpleaudio as sa
 
 ROOT_DIR = Path(__file__).parent
@@ -11,6 +14,7 @@ GENERAL_PARAMS = {
     "order_by": "startTime",
     "single_events": True,
 }
+CMD = "notify-send -u critical -a GoogleCalendar {calendar} {title}"
 
 
 def validate_sound_file(wav_file: str) -> bool:
@@ -22,3 +26,9 @@ def make_sound(sound_path: Path = ROOT_DIR / "resources" / "pop.wav"):
     if validate_sound_file(sound_file):
         wave_obj = sa.WaveObject.from_wave_file(sound_file)
         wave_obj.play()
+
+
+def run_notify(command: str):
+    subprocess.run(shlex.split(command))
+    # TODO: implement configurable notification sound
+    make_sound()

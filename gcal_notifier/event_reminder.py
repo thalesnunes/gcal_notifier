@@ -1,14 +1,10 @@
 from datetime import datetime, timedelta
-import shlex
-import subprocess
 from typing import Any, Dict, List
 
-from gcal_notifier.utils import make_sound
+from gcal_notifier.utils import CMD, run_notify
 
 
 class SimpleGCalendarNotifier:
-
-    CMD: str = "notify-send -u critical -a GoogleCalendar {calendar} {title}"
 
     def __init__(
         self,
@@ -31,14 +27,8 @@ class SimpleGCalendarNotifier:
                 elif now >= start - timedelta(
                     minutes=reminder
                 ) and now < start - timedelta(minutes=reminder - 1):
-                    cmd = self.create_command(event, event.get("cmd", self.CMD))
-                    self.run_notify(cmd)
-
-    @staticmethod
-    def run_notify(command: str):
-        subprocess.run(shlex.split(command))
-        # TODO: implement configurable notification sound
-        make_sound()
+                    cmd = self.create_command(event, event.get("cmd", CMD))
+                    run_notify(cmd)
 
     @staticmethod
     def create_command(event: Dict[str, Any], cmd: str = CMD):
