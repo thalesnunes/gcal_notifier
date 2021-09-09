@@ -19,7 +19,7 @@
                 "sha256:4afb3f8135dd00551fbbe2607c654fbd0453745d5b43a344d4d620aa89a7e6a0",
                 "sha256:d29f4c02c9f015b060e5b57c5654e51871b50023e43c67847981374c4faf7e8b"
             ],
-            "markers": "python_full_version >= '3.5.0'",
+            "markers": "python_version >= '3.5'",
             "version": "==2.0.0"
         },
         "cachetools": {
@@ -63,11 +63,11 @@
         },
         "google-api-python-client": {
             "hashes": [
-                "sha256:04271ac5d8bb12180921378d470619336b3334a6202bf966882147ede87e72cf",
-                "sha256:bff8bcb30e97c3d15da0e03f0894cd8c100e67c9a53d3958fe9066b6ab277c57"
+                "sha256:102dfe41455ac017796b2da2ec144ac7d66c55c369cb7cbc9480e29c046b055f",
+                "sha256:b2721b2f78dc974573345c04347bcf5a461fb437575288e3be47583a4cadc0d5"
             ],
             "markers": "python_version >= '3.6'",
-            "version": "==2.19.0"
+            "version": "==2.20.0"
         },
         "google-auth": {
             "hashes": [
@@ -86,11 +86,11 @@
         },
         "google-auth-oauthlib": {
             "hashes": [
-                "sha256:4ab58e6c3dc6ccf112f921fcced40e5426fba266768986ea502228488276eaba",
-                "sha256:b5a1ce7c617d247ccb2dfbba9d4bfc734b41096803d854a2c52592ae80150a67"
+                "sha256:3f2a6e802eebbb6fb736a370fbf3b055edcb6b52878bf2f26330b5e041316c73",
+                "sha256:a90a072f6993f2c327067bf65270046384cda5a8ecb20b94ea9a687f1f233a7a"
             ],
             "markers": "python_version >= '3.6'",
-            "version": "==0.4.5"
+            "version": "==0.4.6"
         },
         "googleapis-common-protos": {
             "hashes": [
@@ -235,7 +235,7 @@
                 "sha256:78f9a9bf4e7be0c5ded4583326e7461e3a3c5aae24073648b4bdfa797d78c9d2",
                 "sha256:9d689e6ca1b3038bc82bf8d23e944b6b6037bc02301a574935b2dd946e0353b9"
             ],
-            "markers": "python_version < '4' and python_full_version >= '3.5.0'",
+            "markers": "python_version >= '3.5' and python_version < '4'",
             "version": "==4.7.2"
         },
         "simpleaudio": {
