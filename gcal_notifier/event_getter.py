@@ -9,6 +9,20 @@ from google.auth.exceptions import RefreshError
 
 
 class SimpleGCalendarGetter:
+    """Connector to fetch all events from multiple calendars.
+
+    Args:
+        general_params (Dict[str, Any]): General params
+        calendar_params (Dict[str, Any]): Calendar params
+
+    Attributes:
+        config (ConfigParser): Config parser
+        general_params (Dict[str, Any]): General params
+        calendar_params (Dict[str, Any]): Calendar params
+        calendars (Dict[str, GoogleCalendar]): Calendar connections
+        events (List[Dict[str, Event]]): List of all events
+    """
+
     config: ConfigParser
     general_params: Dict[str, Any]
     calendar_params: Dict[str, Any]
@@ -26,6 +40,8 @@ class SimpleGCalendarGetter:
         self.load_events()
 
     def load_calendars(self):
+        """Load calendars from Google using the configs passed to the class.
+        """
         self.calendars = {}
         new_cal_params = {}
         for label, params in self.calendar_params.items():
@@ -38,13 +54,17 @@ class SimpleGCalendarGetter:
             else:
                 label = params["name"]
             self.calendars[params["name"]] = self.make_conn(
-                                                name=params["name"],
                                                 **conn_params
                                             ).get_events(**self.general_params)
             new_cal_params[label] = params
         self.calendar_params = new_cal_params
 
     def set_reminders(self, event: Event):
+        """Set reminders to event.
+
+        Args:
+            event (Event): event
+        """
         if event.default_reminders:
             event_calendar = self.calendar_params[event.calendar]
             default_rem = event_calendar.get("default_reminders", [])
@@ -54,6 +74,8 @@ class SimpleGCalendarGetter:
             pass
 
     def load_events(self):
+        """Load event from fetched calendar.
+        """
         self.events = []
         for name, calendar in self.calendars.items():
             for event in calendar:
@@ -63,10 +85,18 @@ class SimpleGCalendarGetter:
 
     @staticmethod
     def make_conn(
-        name: str,
         calendar: str = "primary",
         credentials: Path = CONFIG / "default" / "credentials.json"
     ) -> GoogleCalendar:
+        """Wrapper to connect to GoogleCalendar.
+
+        Args:
+            calendar (str): calendar
+            credentials (Path): credentials
+
+        Returns:
+            GoogleCalendar:
+        """
         try:
             return GoogleCalendar(calendar=calendar, credentials_path=credentials)
         except RefreshError:

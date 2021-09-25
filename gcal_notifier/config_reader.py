@@ -1,33 +1,59 @@
 import os
 from pathlib import Path
-from typing import Any, Dict, Tuple
+from typing import Any, Dict, List, Tuple
 from configparser import ConfigParser
 
 from gcal_notifier.utils import CONFIG, GENERAL_PARAMS
 
 
-def parse_int_list(input: str) -> list:
+def parse_int_list(input: str) -> List[int]:
+    """Parse a list of ints from the config file.
+
+    Args:
+        input (str): Input list
+
+    Returns:
+        List[int]: List of ints
+    """
     return list(int(value) for value in input.split(","))
 
 
 def validate_config(config: ConfigParser):
+    """Validate sections of config file.
 
+    Args:
+        config (ConfigParser): Config parser
+    """
     for key in config.sections():
         if not (key == "GENERAL" or key.startswith("CALENDAR")):
             raise KeyError("Config section not valid")
 
 
-def merge_general(config: ConfigParser) -> dict:
+def merge_general(config: ConfigParser) -> Dict[str, Any]:
+    """Merge general configs with defaults.
 
-    params = {
+    Args:
+        config (ConfigParser): Config parser
+
+    Returns:
+        Dict[str, Any]: General params
+    """
+    return {
         **GENERAL_PARAMS,
         "single_events": config["GENERAL"].getboolean("single_events"),
         "order_by": config["GENERAL"].get("order_by"),
     }
-    return params
 
 
-def merge_calendars(config: ConfigParser) -> dict:
+def merge_calendars(config: ConfigParser) -> Dict[str, Any]:
+    """Merge all calendars configs from config file.
+
+    Args:
+        config (ConfigParser): Config parser
+
+    Returns:
+        Dict[str, Any]: Dict with all the calendars' params
+    """
 
     calendar_names = [
         calendar for calendar in config.sections() if calendar.startswith("CALENDAR")
@@ -49,6 +75,14 @@ def merge_calendars(config: ConfigParser) -> dict:
 def init_config(
     config_path: Path = CONFIG / "config.ini",
 ) -> Tuple[Dict[str, Any], Dict[str, Any]]:
+    """Reads, validates and parses the config file.
+
+    Args:
+        config_path (Path): config_path. Defaults to CONFIG / "config.ini"
+
+    Returns:
+        Tuple[Dict[str, Any], Dict[str, Any]]: (General, Calendar)
+    """
 
     config = ConfigParser(converters={"list": parse_int_list})
     config.read(config_path)

@@ -5,6 +5,17 @@ from gcal_notifier.utils import CMD, run_notify
 
 
 class SimpleGCalendarNotifier:
+    """Notifier for GoogleCalendar events.
+
+    Args:
+        events (List[Dict[str, Any]]): List of all cached events
+        general_params (Dict[str, Any]): General params
+        calendar_params (Dict[str, Any]): Calendar params
+
+    Attributes:
+        events (List[Dict[str, Any]]): List of all events
+    """
+    events: List[Dict[str, Any]]
 
     def __init__(
         self,
@@ -16,6 +27,8 @@ class SimpleGCalendarNotifier:
         self.search_reminders()
 
     def search_reminders(self):
+        """Search current reminders to notify.
+        """
         now = datetime.now().astimezone()
         for event in self.events:
             start = event["start"]
@@ -32,6 +45,12 @@ class SimpleGCalendarNotifier:
 
     @staticmethod
     def create_command(event: Dict[str, Any], cmd: str = CMD):
+        """Create a notify command formatting a cmd string.
+
+        Args:
+            event (Dict[str, Any]): Event info
+            cmd (str): Base command to format
+        """
         formatters = {
             "title": f'"{event.get("summary", None)}"',
             "calendar": f'"{event.get("calendar", None)}"',

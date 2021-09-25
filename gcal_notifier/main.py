@@ -8,18 +8,24 @@ from gcal_notifier.event_saver import save_events
 
 
 def run_getter():
+    """Run SimpleGCalendarGetter with user configs.
+    """
     general_params, calendar_params = init_config()
     getter = SimpleGCalendarGetter(general_params, calendar_params)
     save_events(getter.events)
 
 
 def run_notifier():
+    """Run SimpleGCalendarNotifier with user configs.
+    """
     general_params, calendar_params = init_config()
     saved_events = load_saved_events()
     SimpleGCalendarNotifier(saved_events, general_params, calendar_params)
 
 
 def gcal_notifier():
+    """Run gcal_notifier cli.
+    """
 
     args = cli()
 
