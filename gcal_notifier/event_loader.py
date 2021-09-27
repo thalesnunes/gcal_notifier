@@ -1,7 +1,7 @@
-from datetime import datetime
 import json
+from datetime import datetime
 from pathlib import Path
-from typing import Any, List, Dict
+from typing import Any, Dict, List
 
 from gcal_notifier.utils import CONFIG
 

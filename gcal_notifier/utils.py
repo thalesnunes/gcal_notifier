@@ -1,8 +1,8 @@
-from datetime import datetime, timedelta
 import os
-from pathlib import Path
 import shlex
 import subprocess
+from datetime import datetime, timedelta
+from pathlib import Path
 
 import simpleaudio as sa
 

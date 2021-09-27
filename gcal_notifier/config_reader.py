@@ -1,7 +1,7 @@
 import os
+from configparser import ConfigParser
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
-from configparser import ConfigParser
 
 from gcal_notifier.utils import CONFIG, GENERAL_PARAMS
 

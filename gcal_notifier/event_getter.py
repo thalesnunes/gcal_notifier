@@ -1,11 +1,12 @@
 from configparser import ConfigParser
 from pathlib import Path
 from typing import Any, Dict, List
-from gcal_notifier.utils import CONFIG, run_notify
 
 from gcsa.event import Event
 from gcsa.google_calendar import GoogleCalendar
 from google.auth.exceptions import RefreshError
+
+from gcal_notifier.utils import CONFIG, run_notify
 
 
 class SimpleGCalendarGetter:
