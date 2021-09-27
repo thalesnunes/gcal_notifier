@@ -56,7 +56,9 @@ def merge_calendars(config: ConfigParser) -> Dict[str, Any]:
     """
 
     calendar_names = [
-        calendar for calendar in config.sections() if calendar.startswith("CALENDAR")
+        calendar
+        for calendar in config.sections()
+        if calendar.startswith("CALENDAR")
     ]
     calendar_params = {}
     for calendar in calendar_names:

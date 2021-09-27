@@ -30,32 +30,30 @@ class SimpleGCalendarGetter:
     events: List[Dict[str, Event]]
 
     def __init__(
-            self,
-            general_params: Dict[str, Any],
-            calendar_params: Dict[str, Any]
-            ):
+        self, general_params: Dict[str, Any], calendar_params: Dict[str, Any]
+    ):
         self.general_params = general_params
         self.calendar_params = calendar_params
         self.load_calendars()
         self.load_events()
 
     def load_calendars(self):
-        """Load calendars from Google using the configs passed to the class.
-        """
+        """Load calendars from Google using the configs passed to the class."""
         self.calendars = {}
         new_cal_params = {}
         for label, params in self.calendar_params.items():
             conn_params = {
-                    k: params[k] for k in params
-                    if k in ["calendar", "credentials"]
+                k: params[k]
+                for k in params
+                if k in ["calendar", "credentials"]
             }
             if "name" not in params:
                 params["name"] = "Calendar"
             else:
                 label = params["name"]
             self.calendars[params["name"]] = self.make_conn(
-                                                **conn_params
-                                            ).get_events(**self.general_params)
+                **conn_params
+            ).get_events(**self.general_params)
             new_cal_params[label] = params
         self.calendar_params = new_cal_params
 
@@ -74,8 +72,7 @@ class SimpleGCalendarGetter:
             pass
 
     def load_events(self):
-        """Load event from fetched calendar.
-        """
+        """Load event from fetched calendar."""
         self.events = []
         for name, calendar in self.calendars.items():
             for event in calendar:
@@ -86,7 +83,7 @@ class SimpleGCalendarGetter:
     @staticmethod
     def make_conn(
         calendar: str = "primary",
-        credentials: Path = CONFIG / "default" / "credentials.json"
+        credentials: Path = CONFIG / "default" / "credentials.json",
     ) -> GoogleCalendar:
         """Wrapper to connect to GoogleCalendar.
 
@@ -98,8 +95,14 @@ class SimpleGCalendarGetter:
             GoogleCalendar:
         """
         try:
-            return GoogleCalendar(calendar=calendar, credentials_path=credentials)
+            return GoogleCalendar(
+                calendar=calendar, credentials_path=credentials
+            )
         except RefreshError:
             (credentials.parent / "token.pickle").unlink()
-            run_notify(f'notify-send -u critical -a GoogleCalendar {calendar} "You have to authorize the credentials inside {credentials} again!"')
-            return GoogleCalendar(calendar=calendar, credentials_path=credentials)
+            run_notify(
+                f'notify-send -u critical -a GoogleCalendar {calendar} "You have to authorize the credentials inside {credentials} again!"'
+            )
+            return GoogleCalendar(
+                calendar=calendar, credentials_path=credentials
+            )

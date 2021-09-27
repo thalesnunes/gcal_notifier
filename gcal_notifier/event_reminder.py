@@ -15,6 +15,7 @@ class SimpleGCalendarNotifier:
     Attributes:
         events (List[Dict[str, Any]]): List of all events
     """
+
     events: List[Dict[str, Any]]
 
     def __init__(
@@ -27,8 +28,7 @@ class SimpleGCalendarNotifier:
         self.search_reminders()
 
     def search_reminders(self):
-        """Search current reminders to notify.
-        """
+        """Search current reminders to notify."""
         now = datetime.now().astimezone()
         for event in self.events:
             start = event["start"]

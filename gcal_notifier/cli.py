@@ -10,7 +10,7 @@ def init_parser() -> argparse.ArgumentParser:
     """
     parser = argparse.ArgumentParser(
         prog="gcal_notifier",
-        description="A simple and lightweight GoogleCalendar notifier for Linux"
+        description="A simple and lightweight GoogleCalendar notifier for Linux",
     )
     parser.add_argument(
         "command",
@@ -30,8 +30,7 @@ def validate_args(args: Any):
 
 
 def cli():
-    """gcal_notifier cli tool.
-    """
+    """gcal_notifier cli tool."""
 
     parser = init_parser()
     args = parser.parse_args()
