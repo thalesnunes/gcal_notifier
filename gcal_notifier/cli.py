@@ -20,7 +20,7 @@ def init_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def validate_args(args: Any):
+def validate_args(args: Any) -> None:
     """Validates args passed to the cli.
 
     Args:
@@ -29,7 +29,7 @@ def validate_args(args: Any):
     assert args.command in ["get", "remind"], "INVALID OPTION"
 
 
-def cli():
+def cli() -> argparse.Namespace:
     """gcal_notifier cli tool."""
 
     parser = init_parser()

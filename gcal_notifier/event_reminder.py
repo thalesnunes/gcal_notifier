@@ -23,11 +23,11 @@ class SimpleGCalendarNotifier:
         events: List[Dict[str, Any]],
         general_params: Dict[str, Any],
         calendar_params: Dict[str, Any],
-    ):
+    ) -> None:
         self.events = events
         self.search_reminders()
 
-    def search_reminders(self):
+    def search_reminders(self) -> None:
         """Search current reminders to notify."""
         now = datetime.now().astimezone()
         for event in self.events:
@@ -44,7 +44,7 @@ class SimpleGCalendarNotifier:
                     run_notify(cmd)
 
     @staticmethod
-    def create_command(event: Dict[str, Any], cmd: str = CMD):
+    def create_command(event: Dict[str, Any], cmd: str = CMD) -> str:
         """Create a notify command formatting a cmd string.
 
         Args:

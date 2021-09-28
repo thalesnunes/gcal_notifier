@@ -1,6 +1,6 @@
 import json
 import os
-from datetime import date, datetime, time
+from datetime import datetime, time
 from pathlib import Path
 from typing import Any, Dict, List
 
@@ -33,7 +33,7 @@ def events_to_json(events: List[Event]) -> List[Dict[str, Any]]:
     return list(map(event_to_dict, events))
 
 
-def date_to_datetime(date_obj: date) -> datetime:
+def date_to_datetime(date_obj: Any) -> Any:
     """Transforms date to datetime.
 
     Args:
@@ -46,7 +46,7 @@ def date_to_datetime(date_obj: date) -> datetime:
     return datetime.combine(date_obj, time(tzinfo=tzinfo))
 
 
-def event_sorter(event: Dict[str, Any]) -> datetime:
+def event_sorter(event: Dict[str, Any]) -> Any:
     """Returns start date as datetime for sorting.
 
     Args:
@@ -79,7 +79,7 @@ def transform_events(events: List[Event]) -> List[Dict[str, Any]]:
 
 def save_events(
     events: List[Event], file_path: Path = CONFIG / "tmp" / "events.json"
-):
+) -> None:
     """Save events to a cache file.
 
     Args:
@@ -104,7 +104,7 @@ def save_events(
 class DatetimeEncoder(json.JSONEncoder):
     """Encoder for datetime objects."""
 
-    def default(self, o):
+    def default(self, o: Any) -> str:
         try:
             return json.JSONEncoder.default(self, o)
         except TypeError:

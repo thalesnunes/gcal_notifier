@@ -7,21 +7,21 @@ from gcal_notifier.event_reminder import SimpleGCalendarNotifier
 from gcal_notifier.event_saver import save_events
 
 
-def run_getter():
+def run_getter() -> None:
     """Run SimpleGCalendarGetter with user configs."""
     general_params, calendar_params = init_config()
     getter = SimpleGCalendarGetter(general_params, calendar_params)
     save_events(getter.events)
 
 
-def run_notifier():
+def run_notifier() -> None:
     """Run SimpleGCalendarNotifier with user configs."""
     general_params, calendar_params = init_config()
     saved_events = load_saved_events()
     SimpleGCalendarNotifier(saved_events, general_params, calendar_params)
 
 
-def gcal_notifier():
+def gcal_notifier() -> None:
     """Run gcal_notifier cli."""
 
     args = cli()

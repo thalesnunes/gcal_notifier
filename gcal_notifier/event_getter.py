@@ -32,13 +32,13 @@ class SimpleGCalendarGetter:
 
     def __init__(
         self, general_params: Dict[str, Any], calendar_params: Dict[str, Any]
-    ):
+    ) -> None:
         self.general_params = general_params
         self.calendar_params = calendar_params
         self.load_calendars()
         self.load_events()
 
-    def load_calendars(self):
+    def load_calendars(self) -> None:
         """Load calendars from Google using the configs passed to the class."""
         self.calendars = {}
         new_cal_params = {}
@@ -58,7 +58,7 @@ class SimpleGCalendarGetter:
             new_cal_params[label] = params
         self.calendar_params = new_cal_params
 
-    def set_reminders(self, event: Event):
+    def set_reminders(self, event: Event) -> None:
         """Set reminders to event.
 
         Args:
@@ -72,7 +72,7 @@ class SimpleGCalendarGetter:
             # TODO: implement when not default_reminders
             pass
 
-    def load_events(self):
+    def load_events(self) -> None:
         """Load event from fetched calendar."""
         self.events = []
         for name, calendar in self.calendars.items():
@@ -102,7 +102,7 @@ class SimpleGCalendarGetter:
         except RefreshError:
             (credentials.parent / "token.pickle").unlink()
             run_notify(
-                f'notify-send -u critical -a GoogleCalendar {calendar} "You have to authorize the credentials inside {credentials} again!"'
+                f'notify-send -u critical -a GoogleCalendar {calendar} "You have to authorize the credentials inside {credentials} again!"'  # noqa
             )
             return GoogleCalendar(
                 calendar=calendar, credentials_path=credentials

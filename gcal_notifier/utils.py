@@ -29,7 +29,7 @@ def validate_sound_file(wav_file: str) -> bool:
     return wav_file.endswith(".wav")
 
 
-def make_sound(sound_path: Path = ROOT_DIR / "resources" / "pop.wav"):
+def make_sound(sound_path: Path = ROOT_DIR / "resources" / "pop.wav") -> None:
     """Play sound in sound_path.
 
     Args:
@@ -41,7 +41,7 @@ def make_sound(sound_path: Path = ROOT_DIR / "resources" / "pop.wav"):
         wave_obj.play()
 
 
-def run_notify(command: str = CMD):
+def run_notify(command: str = CMD) -> None:
     """Run notification command.
 
     Args:

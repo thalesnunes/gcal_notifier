@@ -18,7 +18,7 @@ def parse_int_list(input: str) -> List[int]:
     return list(int(value) for value in input.split(","))
 
 
-def validate_config(config: ConfigParser):
+def validate_config(config: ConfigParser) -> None:
     """Validate sections of config file.
 
     Args:
