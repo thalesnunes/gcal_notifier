@@ -17,10 +17,10 @@ setup(
     version="1.0.4",
     packages=find_packages(),
     install_requires=all_reqs,
-    package_data={'gcal_notifier': ['resources/pop.wav']},
+    package_data={"gcal_notifier": ["resources/pop.wav"]},
     python_requires=">=3.6",
     entry_points={
-        'console_scripts': ['gcal_notifier=gcal_notifier.main:gcal_notifier']
+        "console_scripts": ["gcal_notifier=gcal_notifier.main:gcal_notifier"]
     },
     author="Thales Nunes",
     keyword="google-calendar, notification, linux",
@@ -31,11 +31,11 @@ setup(
     author_email="thalesaknunes22@gmail.com",
     classifiers=[
         "License :: OSI Approved :: MIT License",
-        'Programming Language :: Python',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: 3.8',
-        'Programming Language :: Python :: 3.9',
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
     ],
 )
