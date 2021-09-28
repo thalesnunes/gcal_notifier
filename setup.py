@@ -1,5 +1,6 @@
 from pathlib import Path
-from setuptools import setup, find_packages
+
+from setuptools import find_packages, setup
 
 # The directory containing this file
 ROOT_DIR = Path(__file__).parent
