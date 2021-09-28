@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "gcal_notifier"
-version = "1.0.4"
+version = "1.0.5"
 description = "A simple and lightweight GoogleCalendar notifier for Linux"
 authors = ["Thales Nunes <thalesaknunes22@gmail.com>"]
 license = "MIT"
@@ -20,16 +20,22 @@ classifiers=[
 ]
 
 [tool.poetry.dependencies]
-python = "^3.6"
+python = "^3.6.2"
 
 gcsa = "^1.2.0"
 simpleaudio = "^1.0.4"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.5"
+mypy = "^0.910"
+isort = "^5.9.3"
+black = "^21.9b0"
 
 [tool.poetry.scripts]
 gcal_notifier = "gcal_notifier.main:gcal_notifier"
+
+[tool.black]
+line-length = 79
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
