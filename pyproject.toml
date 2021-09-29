@@ -24,6 +24,7 @@ python = "^3.6.2"
 
 gcsa = "^1.2.0"
 simpleaudio = "^1.0.4"
+rich = "^10.11.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.5"
