@@ -9,7 +9,13 @@ import simpleaudio as sa
 ROOT_DIR = Path(__file__).parent
 CONFIG = Path(os.path.expanduser("~/.config/gcal_notifier"))
 GENERAL_PARAMS = {
-    "time_min": datetime.now(),
+    "time_min": datetime.now().replace(
+                                    day=1,
+                                    hour=0,
+                                    minute=0,
+                                    second=0,
+                                    microsecond=0
+                                ),
     "time_max": datetime.now() + timedelta(days=1),
     "order_by": "startTime",
     "single_events": True,
