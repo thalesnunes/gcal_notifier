@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from typing import Any, Dict, List
+from typing import Any, Dict, List, NoReturn
 
 from gcal_notifier.utils import CMD, run_notify
 
@@ -23,11 +23,11 @@ class SimpleGCalendarNotifier:
         events: List[Dict[str, Any]],
         general_params: Dict[str, Any],
         calendar_params: Dict[str, Any],
-    ) -> None:
+    ) -> NoReturn:
         self.events = events
         self.search_reminders()
 
-    def search_reminders(self) -> None:
+    def search_reminders(self) -> NoReturn:
         """Search current reminders to notify."""
         now = datetime.now().astimezone()
         for event in self.events:

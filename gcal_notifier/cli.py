@@ -1,5 +1,5 @@
 import argparse
-from typing import Any
+from typing import Any, NoReturn
 
 
 def init_parser() -> argparse.ArgumentParser:
@@ -10,7 +10,7 @@ def init_parser() -> argparse.ArgumentParser:
     """
     parser = argparse.ArgumentParser(
         prog="gcal_notifier",
-        description="A simple and lightweight GoogleCalendar notifier for Linux",
+        description="A simple and lightweight GoogleCalendar notifier for Linux",  # noqa
     )
     parser.add_argument(
         "command",
@@ -20,7 +20,7 @@ def init_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def validate_args(args: Any) -> None:
+def validate_args(args: Any) -> NoReturn:
     """Validates args passed to the cli.
 
     Args:
