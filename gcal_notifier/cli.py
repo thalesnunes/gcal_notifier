@@ -26,7 +26,7 @@ def validate_args(args: Any) -> None:
     Args:
         args (Any): Args passed
     """
-    assert args.command in ["get", "remind"], "INVALID OPTION"
+    assert args.command in ["get", "remind", "print"], "INVALID OPTION"
 
 
 def cli() -> argparse.Namespace:
