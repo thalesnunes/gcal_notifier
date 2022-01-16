@@ -10,25 +10,37 @@ from gcal_notifier.event_reminder import SimpleGCalendarNotifier
 from gcal_notifier.event_saver import save_events
 
 
-def run_getter() -> NoReturn:
-    """Run SimpleGCalendarGetter with user configs."""
-    general_params, calendar_params = init_config()
+def run_getter(general_params, calendar_params) -> NoReturn:
+    """Run SimpleGCalendarGetter with user configs.
+
+    Args:
+        general_params (Dict[str, Any]): General params
+        calendar_params (Dict[str, Any]): Calendar params
+    """
     getter = SimpleGCalendarGetter(general_params, calendar_params)
     getter.load_calendars()
     getter.load_events()
     save_events(getter.events)
 
 
-def run_notifier() -> NoReturn:
-    """Run SimpleGCalendarNotifier with user configs."""
-    general_params, calendar_params = init_config()
+def run_notifier(general_params, calendar_params) -> NoReturn:
+    """Run SimpleGCalendarNotifier with user configs.
+
+    Args:
+        general_params (Dict[str, Any]): General params
+        calendar_params (Dict[str, Any]): Calendar params
+    """
     saved_events = load_saved_events()
     SimpleGCalendarNotifier(saved_events, general_params, calendar_params)
 
 
-def run_printer() -> NoReturn:
-    """Run SimpleGCalendarNotifier with user configs."""
-    general_params, calendar_params = init_config()
+def run_printer(general_params, calendar_params) -> NoReturn:
+    """Run SimpleGCalendarNotifier with user configs.
+
+    Args:
+        general_params (Dict[str, Any]): General params
+        calendar_params (Dict[str, Any]): Calendar params
+    """
     saved_events = load_saved_events()
     printer = SimpleGCalendarPrinter(
             saved_events, general_params, calendar_params
@@ -40,10 +52,11 @@ def gcal_notifier() -> NoReturn:
     """Run gcal_notifier cli."""
 
     args = cli()
+    general_params, calendar_params = init_config()
 
     if args.command == "get":
-        run_getter()
+        run_getter(general_params, calendar_params)
     elif args.command == "remind":
-        run_notifier()
+        run_notifier(general_params, calendar_params)
     elif args.command == "print":
-        run_printer()
+        run_printer(general_params, calendar_params)
