@@ -12,6 +12,8 @@ def run_getter() -> None:
     """Run SimpleGCalendarGetter with user configs."""
     general_params, calendar_params = init_config()
     getter = SimpleGCalendarGetter(general_params, calendar_params)
+    getter.load_calendars()
+    getter.load_events()
     save_events(getter.events)
 
 
@@ -26,8 +28,10 @@ def run_printer() -> None:
     """Run SimpleGCalendarNotifier with user configs."""
     general_params, calendar_params = init_config()
     saved_events = load_saved_events()
-    print(saved_events)
-    SimpleGCalendarPrinter(saved_events, general_params, calendar_params)
+    printer = SimpleGCalendarPrinter(
+            saved_events, general_params, calendar_params
+            )
+    printer.tabulate_events()
 
 
 def gcal_notifier() -> None:
