@@ -1,4 +1,3 @@
-import os
 import shlex
 import subprocess
 from datetime import datetime, timedelta
@@ -8,12 +7,13 @@ from typing import NoReturn
 import simpleaudio as sa
 
 ROOT_DIR = Path(__file__).parent
-CONFIG = Path(os.path.expanduser("~/.config/gcal_notifier"))
+CONFIG = Path("~/.config/gcal_notifier").expanduser()
 GENERAL_PARAMS = {
     "time_min": datetime.now(),
     "time_max": datetime.now() + timedelta(days=1),
     "order_by": "startTime",
     "single_events": True,
+    "notification_sound": ROOT_DIR / "resources" / "pop.wav",
 }
 CMD = "notify-send -u critical -a GoogleCalendar {calendar} {title}"
 COLORS = {
@@ -51,7 +51,7 @@ GCAL_COLORS = {
 }
 
 
-def validate_sound_file(wav_file: str) -> bool:
+def is_sound_valid(wav_file: str) -> bool:
     """Asserts if sound file is valid.
 
     Args:
@@ -70,19 +70,28 @@ def make_sound(
 
     Args:
         sound_path (Path): Path to a wav sound file
+
+    Raises:
+        Exception: Wrong sound file extension
     """
     sound_file = str(sound_path.absolute())
-    if validate_sound_file(sound_file):
+    if is_sound_valid(sound_file):
         wave_obj = sa.WaveObject.from_wave_file(sound_file)
-        wave_obj.play()
+        play_obj = wave_obj.play()
+        play_obj.wait_done()
+    else:
+        raise Exception("The given sound file is not valid. It must be a .wav")
 
 
-def run_notify(command: str = CMD) -> NoReturn:
+def run_notify(
+    command: str = CMD,
+    sound_path: Path = ROOT_DIR / "resources" / "pop.wav",
+) -> NoReturn:
     """Run notification command.
 
     Args:
         command (str): Command to be run
+        sound_path (Path): Path to a wav sound file
     """
     subprocess.run(shlex.split(command))
-    # TODO: implement configurable notification sound
-    make_sound()
+    make_sound(sound_path)

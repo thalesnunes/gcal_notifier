@@ -1,4 +1,3 @@
-import os
 from configparser import ConfigParser
 from pathlib import Path
 from typing import Any, Dict, List, NoReturn, Tuple
@@ -16,6 +15,18 @@ def parse_int_list(input: str) -> List[int]:
         List[int]: List of ints
     """
     return list(int(value) for value in input.split(","))
+
+
+def parse_path(input: str) -> Path:
+    """Parse a string path from the config file.
+
+    Args:
+        input (str): Input list
+
+    Returns:
+        Path: Path
+    """
+    return Path(input).expanduser()
 
 
 def validate_config(config: ConfigParser) -> NoReturn:
@@ -38,11 +49,15 @@ def merge_general(config: ConfigParser) -> Dict[str, Any]:
     Returns:
         Dict[str, Any]: General params
     """
-    return {
-        **GENERAL_PARAMS,
+    user_params = {
         "single_events": config["GENERAL"].getboolean("single_events"),
         "order_by": config["GENERAL"].get("order_by"),
+        "notification_sound": config["GENERAL"].getpath("notification_sound")
     }
+    return {
+            **GENERAL_PARAMS,
+            **{k: v for k, v in user_params.items() if v is not None},
+        }
 
 
 def merge_calendars(config: ConfigParser) -> Dict[str, Any]:
@@ -65,7 +80,7 @@ def merge_calendars(config: ConfigParser) -> Dict[str, Any]:
         cal = config[calendar]
         func_types = {
             "name": cal.get,
-            "credentials": lambda k: os.path.expanduser(cal.get(k)),
+            "credentials": cal.getpath,
             "calendar": cal.get,
             "default_reminders": cal.getlist,
             "default_color": cal.get,
@@ -87,7 +102,9 @@ def init_config(
         Tuple[Dict[str, Any], Dict[str, Any]]: (General, Calendar)
     """
 
-    config = ConfigParser(converters={"list": parse_int_list})
+    config = ConfigParser(
+            converters={"list": parse_int_list, "path": parse_path}
+            )
     config.read(config_path)
     validate_config(config)
     general_params = merge_general(config)

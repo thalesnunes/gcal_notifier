@@ -24,7 +24,9 @@ class SimpleGCalendarNotifier:
         general_params: Dict[str, Any],
         calendar_params: Dict[str, Any],
     ) -> NoReturn:
+
         self.events = events
+        self.general_params = general_params
         self.search_reminders()
 
     def search_reminders(self) -> NoReturn:
@@ -41,7 +43,7 @@ class SimpleGCalendarNotifier:
                     minutes=reminder
                 ) and now < start - timedelta(minutes=reminder - 1):
                     cmd = self.create_command(event, event.get("cmd", CMD))
-                    run_notify(cmd)
+                    run_notify(cmd, self.general_params["notification_sound"])
 
     @staticmethod
     def create_command(event: Dict[str, Any], cmd: str = CMD) -> str:
