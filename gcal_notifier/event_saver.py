@@ -9,6 +9,9 @@ from gcsa.event import Event
 from gcal_notifier.utils import CONFIG
 
 
+TZINFO = datetime.utcnow().astimezone().tzinfo
+
+
 def event_to_dict(event: Event) -> Dict[str, Any]:
     """Transform instance of Event to Dict.
 
@@ -42,8 +45,7 @@ def date_to_datetime(date_obj: Any) -> Any:
     Returns:
         datetime: Datetime object
     """
-    tzinfo = datetime.utcnow().astimezone().tzinfo
-    return datetime.combine(date_obj, time(tzinfo=tzinfo))
+    return datetime.combine(date_obj, time(tzinfo=TZINFO))
 
 
 def event_sorter(event: Dict[str, Any]) -> Any:
