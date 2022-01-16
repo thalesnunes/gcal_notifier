@@ -24,7 +24,7 @@ python = "^3.6.2"
 
 gcsa = "^1.2.0"
 simpleaudio = "^1.0.4"
-tabulate = "^0.8.9"
+tabulate = {git = "https://github.com/astanin/python-tabulate.git", rev = "b2c26bcb70e497f674b38aa7e29de12c0123708a"}
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.5"
