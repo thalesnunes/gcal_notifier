@@ -3,6 +3,7 @@ import shlex
 import subprocess
 from datetime import datetime, timedelta
 from pathlib import Path
+from typing import NoReturn
 
 import simpleaudio as sa
 
@@ -63,7 +64,9 @@ def validate_sound_file(wav_file: str) -> bool:
     return wav_file.endswith(".wav")
 
 
-def make_sound(sound_path: Path = ROOT_DIR / "resources" / "pop.wav") -> None:
+def make_sound(
+        sound_path: Path = ROOT_DIR / "resources" / "pop.wav"
+) -> NoReturn:
     """Play sound in sound_path.
 
     Args:
@@ -75,7 +78,7 @@ def make_sound(sound_path: Path = ROOT_DIR / "resources" / "pop.wav") -> None:
         wave_obj.play()
 
 
-def run_notify(command: str = CMD) -> None:
+def run_notify(command: str = CMD) -> NoReturn:
     """Run notification command.
 
     Args:

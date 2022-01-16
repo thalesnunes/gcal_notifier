@@ -28,7 +28,7 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     license="MIT",
-    url="https://github.com/thalesnunes/SimpleGCalendarNotifier",
+    url="https://github.com/thalesnunes/gcal_notifier",
     author_email="thalesaknunes22@gmail.com",
     classifiers=[
         "License :: OSI Approved :: MIT License",

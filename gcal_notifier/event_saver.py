@@ -2,7 +2,7 @@ import json
 import os
 from datetime import datetime, time
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any, Dict, List, NoReturn
 
 from gcsa.event import Event
 
@@ -81,7 +81,7 @@ def transform_events(events: List[Event]) -> List[Dict[str, Any]]:
 
 def save_events(
     events: List[Event], file_path: Path = CONFIG / "tmp" / "events.json"
-) -> None:
+) -> NoReturn:
     """Save events to a cache file.
 
     Args:

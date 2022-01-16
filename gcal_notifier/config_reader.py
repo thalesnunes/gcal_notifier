@@ -1,7 +1,7 @@
 import os
 from configparser import ConfigParser
 from pathlib import Path
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, NoReturn, Tuple
 
 from gcal_notifier.utils import CONFIG, GENERAL_PARAMS
 
@@ -18,7 +18,7 @@ def parse_int_list(input: str) -> List[int]:
     return list(int(value) for value in input.split(","))
 
 
-def validate_config(config: ConfigParser) -> None:
+def validate_config(config: ConfigParser) -> NoReturn:
     """Validate sections of config file.
 
     Args:
