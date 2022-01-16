@@ -46,8 +46,8 @@ class SimpleGCalendarGetter:
                 if k in ["calendar", "credentials"]
             }
             event_params = {
-                k: params[k]
-                for k in params
+                k: v
+                for k, v in self.general_params.items()
                 if k in ["time_min", "time_max", "order_by", "single_events"]
             }
             self.calendars[cal_code] = self.make_conn(
