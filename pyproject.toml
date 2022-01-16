@@ -7,7 +7,7 @@ license = "MIT"
 
 readme = "README.md"
 
-repository = "https://github.com/thalesnunes/SimpleGCalendarNotifier"
+repository = "https://github.com/thalesnunes/gcal_notifier"
 
 classifiers=[
     "License :: OSI Approved :: MIT License",
@@ -25,7 +25,6 @@ python = "^3.6.2"
 
 gcsa = "^1.2.0"
 simpleaudio = "^1.0.4"
-tabulate = {git = "https://github.com/astanin/python-tabulate.git", rev = "b2c26bcb70e497f674b38aa7e29de12c0123708a"}
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.5"
