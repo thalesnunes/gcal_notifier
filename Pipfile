@@ -6,8 +6,12 @@ name = "pypi"
 [packages]
 gcsa = "*"
 simpleaudio = "*"
+tabulate = "*"
 
 [dev-packages]
 pytest = "*"
+mypy = "*"
+isort = "*"
+black = "*"
 
 [requires]
