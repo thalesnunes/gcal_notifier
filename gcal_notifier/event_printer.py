@@ -1,6 +1,7 @@
-from tabulate import tabulate
-from typing import Any, Dict, List, NoReturn, Set
 import os
+from typing import Any, Dict, List, NoReturn, Set
+
+from tabulate import tabulate
 
 from gcal_notifier.utils import COLORS, GCAL_COLORS
 

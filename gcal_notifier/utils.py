@@ -7,7 +7,6 @@ from typing import NoReturn
 
 import simpleaudio as sa
 
-
 ROOT_DIR = Path(__file__).parent
 CONFIG = Path(os.path.expanduser("~/.config/gcal_notifier"))
 GENERAL_PARAMS = {
