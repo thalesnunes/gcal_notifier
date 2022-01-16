@@ -1,6 +1,6 @@
 from configparser import ConfigParser
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any, Dict, List, NoReturn
 
 from gcsa.event import Event
 from gcsa.google_calendar import GoogleCalendar
@@ -32,52 +32,44 @@ class SimpleGCalendarGetter:
 
     def __init__(
         self, general_params: Dict[str, Any], calendar_params: Dict[str, Any]
-    ) -> None:
+    ) -> NoReturn:
         self.general_params = general_params
         self.calendar_params = calendar_params
-        self.load_calendars()
-        self.load_events()
 
-    def load_calendars(self) -> None:
+    def load_calendars(self) -> NoReturn:
         """Load calendars from Google using the configs passed to the class."""
         self.calendars = {}
-        new_cal_params = {}
-        for label, params in self.calendar_params.items():
+        for cal_code, params in self.calendar_params.items():
             conn_params = {
                 k: params[k]
                 for k in params
                 if k in ["calendar", "credentials"]
             }
-            if "name" not in params:
-                params["name"] = "Calendar"
-            else:
-                label = params["name"]
-            self.calendars[params["name"]] = self.make_conn(
+            self.calendars[cal_code] = self.make_conn(
                 **conn_params
             ).get_events(**self.general_params)
-            new_cal_params[label] = params
-        self.calendar_params = new_cal_params
 
-    def set_reminders(self, event: Event) -> None:
+    def set_reminders(self, event: Event) -> NoReturn:
         """Set reminders to event.
 
         Args:
             event (Event): event
         """
         if event.default_reminders:
-            event_calendar = self.calendar_params[event.calendar]
+            event_calendar = self.calendar_params[event.cal_code]
             default_rem = event_calendar.get("default_reminders", [])
             event.reminders = sorted(default_rem, reverse=True)
         else:
             # TODO: implement when not default_reminders
             pass
 
-    def load_events(self) -> None:
+    def load_events(self) -> NoReturn:
         """Load event from fetched calendar."""
         self.events = []
-        for name, calendar in self.calendars.items():
+        for cal_code, calendar in self.calendars.items():
             for event in calendar:
-                event.calendar = name
+                event.cal_code = cal_code
+                event.calendar = self.calendar_params[cal_code].get("name", "")
                 self.set_reminders(event)
                 self.events.append(event)
 
@@ -93,7 +85,7 @@ class SimpleGCalendarGetter:
             credentials (Path): credentials
 
         Returns:
-            GoogleCalendar:
+            GoogleCalendar: GoogleCalendar client
         """
         try:
             return GoogleCalendar(
@@ -104,6 +96,4 @@ class SimpleGCalendarGetter:
             run_notify(
                 f'notify-send -u critical -a GoogleCalendar {calendar} "You have to authorize the credentials inside {credentials} again!"'  # noqa
             )
-            return GoogleCalendar(
-                calendar=calendar, credentials_path=credentials
-            )
+            quit(1)
