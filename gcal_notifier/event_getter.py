@@ -45,9 +45,14 @@ class SimpleGCalendarGetter:
                 for k in params
                 if k in ["calendar", "credentials"]
             }
+            event_params = {
+                k: params[k]
+                for k in params
+                if k in ["time_min", "time_max", "order_by", "single_events"]
+            }
             self.calendars[cal_code] = self.make_conn(
                 **conn_params
-            ).get_events(**self.general_params)
+            ).get_events(**event_params)
 
     def set_reminders(self, event: Event) -> NoReturn:
         """Set reminders to event.
