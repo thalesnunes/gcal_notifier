@@ -26,7 +26,7 @@ def run_notifier() -> NoReturn:
     SimpleGCalendarNotifier(saved_events, general_params, calendar_params)
 
 
-def run_printer() -> None:
+def run_printer() -> NoReturn:
     """Run SimpleGCalendarNotifier with user configs."""
     general_params, calendar_params = init_config()
     saved_events = load_saved_events()
