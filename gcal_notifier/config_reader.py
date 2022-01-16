@@ -68,6 +68,7 @@ def merge_calendars(config: ConfigParser) -> Dict[str, Any]:
             "credentials": lambda k: os.path.expanduser(cal.get(k)),
             "calendar": cal.get,
             "default_reminders": cal.getlist,
+            "default_color": cal.get,
         }
 
         calendar_params[calendar] = {k: func_types[k](k) for k in cal}
