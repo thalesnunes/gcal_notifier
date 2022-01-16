@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from typing import NoReturn
+from typing import Any, Dict, NoReturn
 
 from gcal_notifier.cli import cli
 from gcal_notifier.config_reader import init_config
@@ -10,7 +10,9 @@ from gcal_notifier.event_reminder import SimpleGCalendarNotifier
 from gcal_notifier.event_saver import save_events
 
 
-def run_getter(general_params, calendar_params) -> NoReturn:
+def run_getter(
+    general_params: Dict[str, Any], calendar_params: Dict[str, Any]
+) -> NoReturn:
     """Run SimpleGCalendarGetter with user configs.
 
     Args:
@@ -23,7 +25,9 @@ def run_getter(general_params, calendar_params) -> NoReturn:
     save_events(getter.events)
 
 
-def run_notifier(general_params, calendar_params) -> NoReturn:
+def run_notifier(
+    general_params: Dict[str, Any], calendar_params: Dict[str, Any]
+) -> NoReturn:
     """Run SimpleGCalendarNotifier with user configs.
 
     Args:
@@ -34,7 +38,9 @@ def run_notifier(general_params, calendar_params) -> NoReturn:
     SimpleGCalendarNotifier(saved_events, general_params, calendar_params)
 
 
-def run_printer(general_params, calendar_params) -> NoReturn:
+def run_printer(
+    general_params: Dict[str, Any], calendar_params: Dict[str, Any]
+) -> NoReturn:
     """Run SimpleGCalendarNotifier with user configs.
 
     Args:
@@ -43,8 +49,8 @@ def run_printer(general_params, calendar_params) -> NoReturn:
     """
     saved_events = load_saved_events()
     printer = SimpleGCalendarPrinter(
-            saved_events, general_params, calendar_params
-            )
+        saved_events, general_params, calendar_params
+    )
     printer.tabulate_events()
 
 

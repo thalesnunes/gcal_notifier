@@ -34,7 +34,7 @@ class SimpleGCalendarPrinter:
         "Wednesday": [],
         "Thursday": [],
         "Friday": [],
-        "Saturday": []
+        "Saturday": [],
     }
 
     def __init__(
@@ -43,7 +43,7 @@ class SimpleGCalendarPrinter:
         general_params: Dict[str, Any],
         calendar_params: Dict[str, Any],
         use_color: bool = True,
-        art_style: str = 'fancy',
+        art_style: str = "fancy",
     ) -> NoReturn:
 
         self.events = events
@@ -67,9 +67,9 @@ class SimpleGCalendarPrinter:
         Returns:
             str: Color code of color name
         """
-        return COLORS.get(colorname, '')
+        return COLORS.get(colorname, "")
 
-    def create_msg(self, msg: str, colorname: str = 'default') -> str:
+    def create_msg(self, msg: str, colorname: str = "default") -> str:
         """Print message given with given color.
 
         Args:
@@ -80,9 +80,11 @@ class SimpleGCalendarPrinter:
             str: Message formated with color, if self.use_color is True
         """
         if self.use_color:
-            msg = self.get_colorcode(colorname) \
-                  + msg \
-                  + self.get_colorcode("default")
+            msg = (
+                self.get_colorcode(colorname)
+                + msg
+                + self.get_colorcode("default")
+            )
         return msg
 
     def add_events_agenda(self, events: List[Dict[str, Any]]) -> NoReturn:
@@ -94,9 +96,9 @@ class SimpleGCalendarPrinter:
         for e in events:
             day_name = e["start"].strftime("%A")
             display_txt = f'{e["start"].strftime("%H:%M")} - {e["summary"]}'
-            default_color = self.calendar_params[
-                            e["cal_code"]
-                            ].get("default_color", "default")
+            default_color = self.calendar_params[e["cal_code"]].get(
+                "default_color", "default"
+            )
             event_color = GCAL_COLORS.get(e["color_id"], default_color)
             colored = self.create_msg(display_txt, event_color)
             self.agenda[day_name].append(colored)
@@ -110,9 +112,9 @@ class SimpleGCalendarPrinter:
         """Tabulates and prints the events to the console."""
         vert_size = os.get_terminal_size().columns
         table = tabulate(
-                self.agenda,
-                headers="keys",
-                tablefmt="fancy_grid",
-                maxcolwidths=vert_size // 7 - 2
-                )
+            self.agenda,
+            headers="keys",
+            tablefmt="fancy_grid",
+            maxcolwidths=vert_size // 7 - 2,
+        )
         print(table)
