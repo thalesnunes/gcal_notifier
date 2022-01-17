@@ -62,11 +62,14 @@ class SimpleGCalendarGetter:
         """
         if event.default_reminders:
             event_calendar = self.calendar_params[event.cal_code]
-            default_rem = event_calendar.get("default_reminders", [])
-            event.reminders = sorted(default_rem, reverse=True)
+            new_reminders = event_calendar.get("default_reminders", [])
         else:
-            # TODO: implement when not default_reminders
-            pass
+            new_reminders = []
+            for reminder in event.reminders:
+                if reminder.method == "popup":
+                    new_reminders.append(reminder.minutes_before_start)
+
+        event.reminders = sorted(new_reminders, reverse=True)
 
     def load_events(self) -> NoReturn:
         """Load event from fetched calendar."""
