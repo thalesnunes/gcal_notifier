@@ -1,5 +1,4 @@
 import argparse
-from typing import Any, NoReturn
 
 
 def init_parser() -> argparse.ArgumentParser:
@@ -8,33 +7,54 @@ def init_parser() -> argparse.ArgumentParser:
     Returns:
         argparse.ArgumentParser: Command line parser with added arguments
     """
-    parser = argparse.ArgumentParser(
+    main_parser = argparse.ArgumentParser(
         prog="gcal_notifier",
-        description="A simple and lightweight GoogleCalendar notifier for Linux",  # noqa
+        description="A simple and lightweight GoogleCalendar notifier for Linux.",  # noqa
     )
-    parser.add_argument(
-        "command",
-        metavar="[get|remind]",
-        help='Use "get" to get events and "remind" to run reminders',
+
+    subparsers = main_parser.add_subparsers(
+            help="Invoking a subcommand with --help prints subcommand usage.",
+            dest="command",
     )
-    return parser
+    subparsers.required = True
 
+    subparsers.add_parser(
+            "get",
+            help="fetch events from Google Calendar and save them in cache.",
+            description="Fetch events from Google Calendar and save them in cache."  # noqa
+    )
 
-def validate_args(args: Any) -> NoReturn:
-    """Validates args passed to the cli.
+    subparsers.add_parser(
+            "notify",
+            help="run reminders with cached events.",
+            description="Run reminders with cached events.",
+    )
 
-    Args:
-        args (Any): Args passed
-    """
-    assert args.command in ["get", "remind", "print"], "INVALID OPTION"
+    parser_print = subparsers.add_parser(
+            "print",
+            help="print events to the console.",
+            description="Print events to the console.",
+    )
+    parser_print.add_argument(
+            "period",
+            type=str,
+            action="store",
+            choices=["day", "week", "month", "d", "w", "m"],
+            nargs="?",
+            default="week",
+    )
+
+    return main_parser
 
 
 def cli() -> argparse.Namespace:
-    """gcal_notifier cli tool."""
+    """gcal_notifier cli tool.
+
+    Returns:
+        argparse.Namespace: Namespace with parsed args from cli
+    """
 
     parser = init_parser()
     args = parser.parse_args()
-
-    validate_args(args)
 
     return args
