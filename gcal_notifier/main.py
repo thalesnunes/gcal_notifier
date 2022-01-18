@@ -62,7 +62,7 @@ def gcal_notifier() -> NoReturn:
 
     if args.command == "get":
         run_getter(general_params, calendar_params)
-    elif args.command == "remind":
+    elif args.command == "notify":
         run_notifier(general_params, calendar_params)
     elif args.command == "print":
         run_printer(general_params, calendar_params)
