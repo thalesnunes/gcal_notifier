@@ -6,7 +6,8 @@ from typing import Any, Dict, List, NoReturn
 
 from gcsa.event import Event
 
-from gcal_notifier.globals import CONFIG
+from gcal_notifier.globals import CACHE
+
 
 TZINFO = datetime.utcnow().astimezone().tzinfo
 
@@ -79,7 +80,7 @@ def transform_events(events: List[Event]) -> List[Dict[str, Any]]:
 
 
 def save_events(
-    events: List[Event], file_path: Path = CONFIG / "tmp" / "events.json"
+    events: List[Event], file_path: Path = CACHE / "events_notify.json"
 ) -> NoReturn:
     """Save events to a cache file.
 
@@ -92,7 +93,7 @@ def save_events(
 
     file_path = Path(file_path)
     os.makedirs(file_path.parent, exist_ok=True)
-    with open(Path(file_path), "w") as json_out:
+    with open(file_path, "w") as json_out:
         json.dump(
             json_events,
             json_out,

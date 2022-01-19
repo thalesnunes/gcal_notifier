@@ -3,11 +3,11 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List
 
-from gcal_notifier.globals import CONFIG
+from gcal_notifier.globals import CACHE
 
 
 def load_events_file(
-    path: Path = CONFIG / "tmp" / "events.json",
+    path: Path = CACHE / "events_notify.json",
 ) -> List[Dict[str, Any]]:
     """Load cached events file.
 
