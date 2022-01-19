@@ -43,7 +43,7 @@ class SimpleGCalendarPrinter:
         general_params: Dict[str, Any],
         calendar_params: Dict[str, Any],
         use_color: bool = True,
-        art_style: str = "fancy",
+        art_style: str = "fancy_grid",
     ) -> NoReturn:
 
         self.events = events
@@ -117,7 +117,7 @@ class SimpleGCalendarPrinter:
         table = tabulate(
             self.agenda,
             headers="keys",
-            tablefmt="fancy_grid",
+            tablefmt=self.art_style,
             maxcolwidths=vert_size // 7 - 2,
         )
         print(table)
