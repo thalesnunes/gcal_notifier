@@ -3,7 +3,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List
 
-from gcal_notifier.utils import CONFIG
+from gcal_notifier.globals import CONFIG
 
 
 def load_events_file(

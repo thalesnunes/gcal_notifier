@@ -6,7 +6,7 @@ from typing import Any, Dict, List, NoReturn
 
 from gcsa.event import Event
 
-from gcal_notifier.utils import CONFIG
+from gcal_notifier.globals import CONFIG
 
 TZINFO = datetime.utcnow().astimezone().tzinfo
 

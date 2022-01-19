@@ -6,7 +6,8 @@ from gcsa.event import Event
 from gcsa.google_calendar import GoogleCalendar
 from google.auth.exceptions import RefreshError
 
-from gcal_notifier.utils import CONFIG, run_notify
+from gcal_notifier.globals import CONFIG
+from gcal_notifier.utils import run_notify
 
 
 class SimpleGCalendarGetter:

@@ -1,7 +1,8 @@
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, NoReturn
 
-from gcal_notifier.utils import CMD, run_notify
+from gcal_notifier.globals import CMD
+from gcal_notifier.utils import run_notify
 
 
 class SimpleGCalendarNotifier:

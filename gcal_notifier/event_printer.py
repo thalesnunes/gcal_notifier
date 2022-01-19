@@ -1,8 +1,8 @@
 import os
 from typing import Any, Dict, List, NoReturn, Set
 
+from gcal_notifier.globals import COLORS, GCAL_COLORS
 from gcal_notifier.tabulate import tabulate
-from gcal_notifier.utils import COLORS, GCAL_COLORS
 
 
 class SimpleGCalendarPrinter:
