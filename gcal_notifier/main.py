@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from pathlib import Path
 from typing import Any, Dict, NoReturn
 
 from gcal_notifier.cli import cli
@@ -8,21 +9,25 @@ from gcal_notifier.event_loader import load_saved_events
 from gcal_notifier.event_printer import SimpleGCalendarPrinter
 from gcal_notifier.event_reminder import SimpleGCalendarNotifier
 from gcal_notifier.event_saver import save_events
+from gcal_notifier.globals import CACHE
 
 
 def run_getter(
-    general_params: Dict[str, Any], calendar_params: Dict[str, Any]
+    general_params: Dict[str, Any],
+    calendar_params: Dict[str, Any],
+    save_path: Path = CACHE / "events_notify.json"
 ) -> NoReturn:
     """Run SimpleGCalendarGetter with user configs.
 
     Args:
         general_params (Dict[str, Any]): General params
         calendar_params (Dict[str, Any]): Calendar params
+        save_path (str): Path to file to be saved
     """
     getter = SimpleGCalendarGetter(general_params, calendar_params)
     getter.load_calendars()
     getter.load_events()
-    save_events(getter.events)
+    save_events(getter.events, file_path=save_path)
 
 
 def run_notifier(
