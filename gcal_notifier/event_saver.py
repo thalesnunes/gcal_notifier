@@ -1,5 +1,4 @@
 import json
-import os
 from datetime import datetime, time
 from pathlib import Path
 from typing import Any, Dict, List, NoReturn
@@ -92,7 +91,7 @@ def save_events(
     json_events = transform_events(events)
 
     file_path = Path(file_path)
-    os.makedirs(file_path.parent, exist_ok=True)
+    file_path.parent.mkdir(parents=True, exist_ok=True)
     with open(file_path, "w") as json_out:
         json.dump(
             json_events,
