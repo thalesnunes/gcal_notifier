@@ -105,8 +105,11 @@ class SimpleGCalendarPrinter:
 
         # Workaround to make word wraping work right
         max_len = max(map(len, self.agenda.values()))
-        for day, events in self.agenda.items():
-            self.agenda[day] += [""] * (max_len - len(events))
+        if max_len == 0:
+            self.agenda = {key: [""] for key in self.agenda.keys()}
+        else:
+            for day, events in self.agenda.items():
+                self.agenda[day] += [""] * (max_len - len(events))
 
     def tabulate_events(self) -> NoReturn:
         """Tabulates and prints the events to the console."""
