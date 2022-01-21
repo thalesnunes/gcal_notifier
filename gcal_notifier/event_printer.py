@@ -20,22 +20,12 @@ class SimpleGCalendarPrinter:
         use_color (bool): Use colors in output
         colorset (Set[str]): Names of colors
         art_style (str): Style of output
-        agenda (Dict[str, List[str]])
     """
 
     events: List[Dict[str, Any]]
     use_color: bool
     colorset: Set[str]
     art_style: str
-    agenda: Dict[str, List[str]] = {
-        "Sunday": [],
-        "Monday": [],
-        "Tuesday": [],
-        "Wednesday": [],
-        "Thursday": [],
-        "Friday": [],
-        "Saturday": [],
-    }
 
     def __init__(
         self,
@@ -54,6 +44,8 @@ class SimpleGCalendarPrinter:
         self.use_color = use_color
         self.colorset = set(COLORS.keys())
         self.art_style = art_style
+
+        self.create_agenda()
 
     @staticmethod
     def get_colorcode(colorname: str) -> str:
@@ -105,6 +97,17 @@ class SimpleGCalendarPrinter:
         colored = self.create_msg(display_txt, event_color)
 
         return colored
+
+    def create_agenda(self) -> NoReturn:
+
+        self.agenda = {}
+        for event in self.events:
+            start_date = event["start"].date
+            if start_date in self.agenda:
+                self.agenda[start_date].append(event)
+            else:
+                self.agenda[start_date] = [event]
+        print(self.agenda)
 
     def add_events_agenda(self, events: List[Dict[str, Any]]) -> NoReturn:
         """Add events to the weekly agenda in the string format.
