@@ -44,19 +44,22 @@ def run_notifier(
 
 
 def run_printer(
-    general_params: Dict[str, Any], calendar_params: Dict[str, Any]
+    general_params: Dict[str, Any],
+    calendar_params: Dict[str, Any],
+    format: str = 'week'
 ) -> NoReturn:
     """Run SimpleGCalendarNotifier with user configs.
 
     Args:
         general_params (Dict[str, Any]): General params
         calendar_params (Dict[str, Any]): Calendar params
+        format (str): Format to use when printing events
     """
     saved_events = load_saved_events()
     printer = SimpleGCalendarPrinter(
         saved_events, general_params, calendar_params
     )
-    printer.tabulate_events()
+    printer.print_events(format)
 
 
 def gcal_notifier() -> NoReturn:
@@ -70,4 +73,4 @@ def gcal_notifier() -> NoReturn:
     elif args.command == "notify":
         run_notifier(general_params, calendar_params)
     elif args.command == "print":
-        run_printer(general_params, calendar_params)
+        run_printer(general_params, calendar_params, args.period)
