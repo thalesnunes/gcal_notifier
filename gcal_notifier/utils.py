@@ -1,7 +1,9 @@
+import calendar
+from datetime import datetime, timedelta
 import shlex
 import subprocess
 from pathlib import Path
-from typing import NoReturn
+from typing import NoReturn, Tuple
 
 import simpleaudio as sa
 
@@ -52,3 +54,33 @@ def run_notify(
     """
     subprocess.run(shlex.split(command))
     make_sound(sound_path)
+
+
+def define_period(period: str = "day") -> Tuple[datetime, datetime]:
+    """Define period based on string.
+
+    Args:
+        period (str): Period as string: "week", "month", "day"
+
+    Returns:
+        Tuple[datetime, datetime]: (Start datetime, End datetime)
+    """
+    today = datetime.now()
+
+    if period.startswith("d"):
+        time_min = today
+        time_max = today.replace(hour=23, minute=59, second=59)
+
+    elif period.startswith("w"):
+        weekday = today.weekday()
+        time_min = today - timedelta(days=weekday + 1)
+        to_sum = 5 - weekday if weekday != 6 else 6
+        time_max = today + timedelta(days=to_sum)
+
+    elif period.startswith("m"):
+        time_min = today.replace(day=1)
+        time_max = today.replace(
+                    day=calendar.monthrange(today.year, today.month)[1]
+                )
+
+    return time_min, time_max
