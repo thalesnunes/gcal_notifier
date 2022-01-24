@@ -1,6 +1,7 @@
 from configparser import ConfigParser
+from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, NoReturn
+from typing import Any, Dict, List, NoReturn, Tuple
 
 from gcsa.event import Event
 from gcsa.google_calendar import GoogleCalendar
@@ -16,6 +17,7 @@ class SimpleGCalendarGetter:
     Args:
         general_params (Dict[str, Any]): General params
         calendar_params (Dict[str, Any]): Calendar params
+        period (Tuple[datetime, datetime]): (Start datetime, End datetime)
 
     Attributes:
         config (ConfigParser): Config parser
@@ -23,6 +25,8 @@ class SimpleGCalendarGetter:
         calendar_params (Dict[str, Any]): Calendar params
         calendars (Dict[str, GoogleCalendar]): Calendar connections
         events (List[Dict[str, Event]]): List of all events
+        time_min (datetime): Lower bound of time interval
+        time_max (datetime): Upper bound of time interval
     """
 
     config: ConfigParser
@@ -30,26 +34,39 @@ class SimpleGCalendarGetter:
     calendar_params: Dict[str, Any]
     calendars: Dict[str, GoogleCalendar]
     events: List[Dict[str, Event]]
+    time_min: datetime
+    time_max: datetime
 
     def __init__(
-        self, general_params: Dict[str, Any], calendar_params: Dict[str, Any]
+        self,
+        general_params: Dict[str, Any],
+        calendar_params: Dict[str, Any],
+        period: Tuple[datetime, datetime]
     ) -> NoReturn:
+
         self.general_params = general_params
         self.calendar_params = calendar_params
 
+        self.time_min, self.time_max = period
+
     def load_calendars(self) -> NoReturn:
-        """Load calendars from Google using the configs passed to the class."""
+        """Load calendars from Google using the configs passed to the class.
+        """
         self.calendars = {}
+
+        event_params = {
+            k: v
+            for k, v in self.general_params.items()
+            if k in ["order_by", "single_events"]
+        }
+        event_params["time_min"] = self.time_min
+        event_params["time_max"] = self.time_max
+
         for cal_code, params in self.calendar_params.items():
             conn_params = {
                 k: params[k]
                 for k in params
                 if k in ["calendar", "credentials"]
-            }
-            event_params = {
-                k: v
-                for k, v in self.general_params.items()
-                if k in ["time_min", "time_max", "order_by", "single_events"]
             }
             self.calendars[cal_code] = self.make_conn(
                 **conn_params
@@ -73,7 +90,8 @@ class SimpleGCalendarGetter:
         event.reminders = sorted(new_reminders, reverse=True)
 
     def load_events(self) -> NoReturn:
-        """Load event from fetched calendar."""
+        """Load event from fetched calendar.
+        """
         self.events = []
         for cal_code, calendar in self.calendars.items():
             for event in calendar:
