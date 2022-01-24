@@ -1,4 +1,3 @@
-from datetime import datetime, timedelta
 from pathlib import Path
 
 
@@ -9,8 +8,6 @@ CONFIG = Path("~/.config/gcal_notifier").expanduser()
 CACHE = Path("~/.cache/gcal_notifier").expanduser()
 
 GENERAL_PARAMS = {
-    "time_min": datetime.now(),
-    "time_max": datetime.now() + timedelta(days=1),
     "order_by": "startTime",
     "single_events": True,
     "notification_sound": ROOT_DIR / "resources" / "pop.wav",
