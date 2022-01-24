@@ -1,6 +1,7 @@
 #!/usr/bin/env python
+from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, NoReturn
+from typing import Any, Dict, NoReturn, Tuple
 
 from gcal_notifier.cli import cli
 from gcal_notifier.config_reader import init_config
@@ -10,11 +11,13 @@ from gcal_notifier.event_printer import SimpleGCalendarPrinter
 from gcal_notifier.event_reminder import SimpleGCalendarNotifier
 from gcal_notifier.event_saver import save_events
 from gcal_notifier.globals import CACHE
+from gcal_notifier.utils import define_period
 
 
 def run_getter(
     general_params: Dict[str, Any],
     calendar_params: Dict[str, Any],
+    period: Tuple[datetime, datetime],
     save_path: Path = CACHE / "events_notify.json"
 ) -> NoReturn:
     """Run SimpleGCalendarGetter with user configs.
@@ -24,7 +27,7 @@ def run_getter(
         calendar_params (Dict[str, Any]): Calendar params
         save_path (str): Path to file to be saved
     """
-    getter = SimpleGCalendarGetter(general_params, calendar_params)
+    getter = SimpleGCalendarGetter(general_params, calendar_params, period)
     getter.load_calendars()
     getter.load_events()
     save_events(getter.events, file_path=save_path)
@@ -46,9 +49,10 @@ def run_notifier(
 def run_printer(
     general_params: Dict[str, Any],
     calendar_params: Dict[str, Any],
-    format: str = 'week'
+    period: Tuple[datetime, datetime],
+    format: str = "day"
 ) -> NoReturn:
-    """Run SimpleGCalendarNotifier with user configs.
+    """Run SimpleGCalendarPrinter with user configs.
 
     Args:
         general_params (Dict[str, Any]): General params
@@ -57,20 +61,25 @@ def run_printer(
     """
     saved_events = load_saved_events()
     printer = SimpleGCalendarPrinter(
-        saved_events, general_params, calendar_params
+        saved_events, general_params, calendar_params, period, format=format
     )
     printer.print_events(format)
 
 
 def gcal_notifier() -> NoReturn:
-    """Run gcal_notifier cli."""
+    """Run gcal_notifier cli.
+    """
 
     args = cli()
     general_params, calendar_params = init_config()
+    if "period" in args:
+        period = define_period(args.period)
+    else:
+        period = define_period()
 
     if args.command == "get":
-        run_getter(general_params, calendar_params)
+        run_getter(general_params, calendar_params, period)
     elif args.command == "notify":
         run_notifier(general_params, calendar_params)
     elif args.command == "print":
-        run_printer(general_params, calendar_params, args.period)
+        run_printer(general_params, calendar_params, period, args.period)
