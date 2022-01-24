@@ -1,5 +1,6 @@
+from datetime import datetime, timedelta
 import os
-from typing import Any, Dict, List, NoReturn, Set
+from typing import Any, Dict, List, NoReturn, Tuple
 
 from gcal_notifier.globals import COLORS, GCAL_COLORS
 from gcal_notifier.tabulate import tabulate
@@ -12,28 +13,34 @@ class SimpleGCalendarPrinter:
         events (List[Dict[str, Any]]): List of events
         general_params (Dict[str, Any]): General params
         calendar_params (Dict[str, Any]): Calendar params
+        period (Tuple[datetime, datetime]): (Start datetime, End datetime)
         use_color (bool): Use colors in output
         art_style (str): Style of output
 
     Attributes:
-        events: List[Dict[str, Any]]
+        events (List[Dict[str, Any]]): List of events
         use_color (bool): Use colors in output
         colorset (Set[str]): Names of colors
         art_style (str): Style of output
+        time_min (datetime): Lower bound of time interval
+        time_max (datetime): Upper bound of time interval
     """
 
     events: List[Dict[str, Any]]
     use_color: bool
-    colorset: Set[str]
     art_style: str
+    time_min: datetime
+    time_max: datetime
 
     def __init__(
         self,
         events: List[Dict[str, Any]],
         general_params: Dict[str, Any],
         calendar_params: Dict[str, Any],
+        period: Tuple[datetime, datetime],
         use_color: bool = True,
         art_style: str = "fancy_grid",
+        format: str = "day",
     ) -> NoReturn:
 
         self.events = events
@@ -42,10 +49,9 @@ class SimpleGCalendarPrinter:
         self.calendar_params = calendar_params
 
         self.use_color = use_color
-        self.colorset = set(COLORS.keys())
         self.art_style = art_style
 
-        self.create_agenda()
+        self.prep_agenda()
 
     @staticmethod
     def get_colorcode(colorname: str) -> str:
@@ -98,16 +104,13 @@ class SimpleGCalendarPrinter:
 
         return colored
 
-    def create_agenda(self) -> NoReturn:
-
-        self.agenda = {}
-        for event in self.events:
-            start_date = event["start"].date
-            if start_date in self.agenda:
-                self.agenda[start_date].append(event)
-            else:
-                self.agenda[start_date] = [event]
-        print(self.agenda)
+    def prep_agenda(self) -> NoReturn:
+        """Prepares the agenda to add the events later.
+        """
+        self.agenda = {
+                self.time_min + timedelta(days=i): []
+                for i in range((self.time_max-self.time_min).days+1)
+            }
 
     def add_events_agenda(self, events: List[Dict[str, Any]]) -> NoReturn:
         """Add events to the weekly agenda in the string format.
@@ -115,10 +118,12 @@ class SimpleGCalendarPrinter:
         Args:
             events (List[Dict[str, Any]]): List of events
         """
-        for e in events:
-            day_name = e["start"].strftime("%A")
-            event_text = self.get_text_from_event(e)
-            self.agenda[day_name].append(event_text)
+        for event in events:
+            start_date = event["start"].date()
+            self.agenda[start_date].append(event)
+            # day_name = event["start"].strftime("%A")
+            # event_text = self.get_text_from_event(event)
+            # self.agenda[day_name].append(event_text)
 
     def fill_event_matrix(self, fill_value: str = "") -> NoReturn:
         """Fill the matrix with a fill_value so it is symmetrical.
