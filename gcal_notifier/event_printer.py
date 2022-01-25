@@ -20,7 +20,6 @@ class SimpleGCalendarPrinter:
     Attributes:
         events (List[Dict[str, Any]]): List of events
         use_color (bool): Use colors in output
-        colorset (Set[str]): Names of colors
         art_style (str): Style of output
         time_min (datetime): Lower bound of time interval
         time_max (datetime): Upper bound of time interval
@@ -50,6 +49,8 @@ class SimpleGCalendarPrinter:
 
         self.use_color = use_color
         self.art_style = art_style
+
+        self.time_min, self.time_max = period
 
         self.prep_agenda()
 
@@ -108,7 +109,7 @@ class SimpleGCalendarPrinter:
         """Prepares the agenda to add the events later.
         """
         self.agenda = {
-                self.time_min + timedelta(days=i): []
+                (self.time_min + timedelta(days=i)).date(): []
                 for i in range((self.time_max-self.time_min).days+1)
             }
 
@@ -121,9 +122,24 @@ class SimpleGCalendarPrinter:
         for event in events:
             start_date = event["start"].date()
             self.agenda[start_date].append(event)
-            # day_name = event["start"].strftime("%A")
-            # event_text = self.get_text_from_event(event)
-            # self.agenda[day_name].append(event_text)
+
+    def create_formatted_calendar(self) -> NoReturn:
+
+        self.fmt_cal = {}
+        for day, events in self.agenda.items():
+            weekday = day.strftime("%A")
+            if weekday not in self.fmt_cal:
+                self.fmt_cal[weekday] = []
+
+            self.fmt_cal[weekday].append(
+                    self.create_msg(day.strftime("%d."), "brightwhite")
+            )
+            for event in events:
+                self.fmt_cal[weekday][-1] += (
+                        "\n" + self.get_text_from_event(event)
+                    )
+
+        self.fill_event_matrix()
 
     def fill_event_matrix(self, fill_value: str = "") -> NoReturn:
         """Fill the matrix with a fill_value so it is symmetrical.
@@ -131,33 +147,38 @@ class SimpleGCalendarPrinter:
         Args:
             fill_value (str): Value to be used to fill the lists.
         """
-
-        max_len = max(map(len, self.agenda.values()))
+        max_len = max(map(len, self.fmt_cal.values()))
         if max_len == 0:
-            self.agenda = {key: [fill_value] for key in self.agenda.keys()}
+            self.fmt_cal = {key: [fill_value] for key in self.fmt_cal.keys()}
         else:
-            for day, events in self.agenda.items():
-                self.agenda[day] += [fill_value] * (max_len - len(events))
+            for day, events in self.fmt_cal.items():
+                self.fmt_cal[day] += [fill_value] * (max_len - len(events))
 
-    def print_events(self, format: str = "week") -> NoReturn:
+    def print_events(self, format: str = "day") -> NoReturn:
         """Prints the events using the given format.
 
         Args:
             format (str): Format used to print the events
         """
 
-        if format == "list" or format == "l":
-            pass
+        self.add_events_agenda(self.events)
+        if format.startswith("d"):
+            for day, events in self.agenda.items():
+                print(
+                    self.create_msg(day.strftime("%d/%m - %A:"), "brightwhite")
+                )
+                for event in events:
+                    print(" ", self.get_text_from_event(event))
+                print()
         else:
-            self.add_events_agenda(self.events)
-            self.fill_event_matrix()
+            self.create_formatted_calendar()
 
             vert_size = os.get_terminal_size().columns
 
             output_events = tabulate(
-                self.agenda,
+                self.fmt_cal,
                 headers="keys",
                 tablefmt=self.art_style,
                 maxcolwidths=vert_size // 7 - 2,
             )
-        print(output_events)
+            print(output_events)
