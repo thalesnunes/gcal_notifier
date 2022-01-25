@@ -69,7 +69,7 @@ def define_period(period: str = "day") -> Tuple[datetime, datetime]:
 
     if period.startswith("d"):
         time_min = today
-        time_max = today.replace(hour=23, minute=59, second=59)
+        time_max = today + timedelta(days=1)
 
     elif period.startswith("w"):
         weekday = today.weekday()
