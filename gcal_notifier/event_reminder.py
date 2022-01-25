@@ -28,7 +28,6 @@ class SimpleGCalendarNotifier:
 
         self.events = events
         self.general_params = general_params
-        self.search_reminders()
 
     def search_reminders(self) -> NoReturn:
         """Search current reminders to notify."""
@@ -39,7 +38,7 @@ class SimpleGCalendarNotifier:
                 continue
             for reminder in event["reminders"]:
                 if now < start - timedelta(minutes=reminder):
-                    return
+                    continue
                 elif now >= start - timedelta(
                     minutes=reminder
                 ) and now < start - timedelta(minutes=reminder - 1):
