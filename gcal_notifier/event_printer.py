@@ -188,7 +188,7 @@ class SimpleGCalendarPrinter:
                 self.fmt_cal,
                 headers="keys",
                 tablefmt=self.art_style,
-                maxcolwidths=vert_size // 7 - 2,
+                maxcolwidths=vert_size // 7 - 3,
                 disable_numparse=True,
             )
             print(output_events)
