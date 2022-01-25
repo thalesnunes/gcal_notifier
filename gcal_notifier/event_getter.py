@@ -17,7 +17,6 @@ class SimpleGCalendarGetter:
     Args:
         general_params (Dict[str, Any]): General params
         calendar_params (Dict[str, Any]): Calendar params
-        period (Tuple[datetime, datetime]): (Start datetime, End datetime)
 
     Attributes:
         config (ConfigParser): Config parser
@@ -25,8 +24,6 @@ class SimpleGCalendarGetter:
         calendar_params (Dict[str, Any]): Calendar params
         calendars (Dict[str, GoogleCalendar]): Calendar connections
         events (List[Dict[str, Event]]): List of all events
-        time_min (datetime): Lower bound of time interval
-        time_max (datetime): Upper bound of time interval
     """
 
     config: ConfigParser
@@ -34,23 +31,21 @@ class SimpleGCalendarGetter:
     calendar_params: Dict[str, Any]
     calendars: Dict[str, GoogleCalendar]
     events: List[Dict[str, Event]]
-    time_min: datetime
-    time_max: datetime
 
     def __init__(
         self,
         general_params: Dict[str, Any],
         calendar_params: Dict[str, Any],
-        period: Tuple[datetime, datetime]
     ) -> NoReturn:
 
         self.general_params = general_params
         self.calendar_params = calendar_params
 
-        self.time_min, self.time_max = period
-
-    def load_calendars(self) -> NoReturn:
+    def load_calendars(self, period: Tuple[datetime, datetime]) -> NoReturn:
         """Load calendars from Google using the configs passed to the class.
+
+        Args:
+            period (Tuple[datetime, datetime]): (Start datetime, End datetime)
         """
         self.calendars = {}
 
@@ -59,8 +54,7 @@ class SimpleGCalendarGetter:
             for k, v in self.general_params.items()
             if k in ["order_by", "single_events"]
         }
-        event_params["time_min"] = self.time_min
-        event_params["time_max"] = self.time_max
+        event_params["time_min"], event_params["time_max"] = period
 
         for cal_code, params in self.calendar_params.items():
             conn_params = {
