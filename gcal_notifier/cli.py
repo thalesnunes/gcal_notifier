@@ -41,7 +41,7 @@ def init_parser() -> argparse.ArgumentParser:
             action="store",
             choices=["day", "week", "month", "d", "w", "m"],
             nargs="?",
-            default="week",
+            default="day",
     )
 
     return main_parser

@@ -2,7 +2,7 @@ from configparser import ConfigParser
 from pathlib import Path
 from typing import Any, Dict, List, NoReturn, Tuple
 
-from gcal_notifier.utils import CONFIG, GENERAL_PARAMS
+from gcal_notifier.globals import CONFIG, GENERAL_PARAMS
 
 
 def parse_int_list(input: str) -> List[int]:

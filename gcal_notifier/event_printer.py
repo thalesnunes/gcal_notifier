@@ -1,8 +1,9 @@
+from datetime import datetime, timedelta
 import os
-from typing import Any, Dict, List, NoReturn, Set
+from typing import Any, Dict, List, NoReturn, Tuple
 
+from gcal_notifier.globals import COLORS, GCAL_COLORS
 from gcal_notifier.tabulate import tabulate
-from gcal_notifier.utils import COLORS, GCAL_COLORS
 
 
 class SimpleGCalendarPrinter:
@@ -12,38 +13,33 @@ class SimpleGCalendarPrinter:
         events (List[Dict[str, Any]]): List of events
         general_params (Dict[str, Any]): General params
         calendar_params (Dict[str, Any]): Calendar params
+        period (Tuple[datetime, datetime]): (Start datetime, End datetime)
         use_color (bool): Use colors in output
         art_style (str): Style of output
 
     Attributes:
-        events: List[Dict[str, Any]]
+        events (List[Dict[str, Any]]): List of events
         use_color (bool): Use colors in output
-        colorset (Set[str]): Names of colors
         art_style (str): Style of output
-        agenda (Dict[str, List[str]])
+        time_min (datetime): Lower bound of time interval
+        time_max (datetime): Upper bound of time interval
     """
 
     events: List[Dict[str, Any]]
     use_color: bool
-    colorset: Set[str]
     art_style: str
-    agenda: Dict[str, List[str]] = {
-        "Sunday": [],
-        "Monday": [],
-        "Tuesday": [],
-        "Wednesday": [],
-        "Thursday": [],
-        "Friday": [],
-        "Saturday": [],
-    }
+    time_min: datetime
+    time_max: datetime
 
     def __init__(
         self,
         events: List[Dict[str, Any]],
         general_params: Dict[str, Any],
         calendar_params: Dict[str, Any],
+        period: Tuple[datetime, datetime],
         use_color: bool = True,
-        art_style: str = "fancy",
+        art_style: str = "fancy_grid",
+        format: str = "day",
     ) -> NoReturn:
 
         self.events = events
@@ -52,10 +48,11 @@ class SimpleGCalendarPrinter:
         self.calendar_params = calendar_params
 
         self.use_color = use_color
-        self.colorset = set(COLORS.keys())
         self.art_style = art_style
 
-        self.add_events_agenda(self.events)
+        self.time_min, self.time_max = period
+
+        self.prep_agenda()
 
     @staticmethod
     def get_colorcode(colorname: str) -> str:
@@ -87,34 +84,110 @@ class SimpleGCalendarPrinter:
             )
         return msg
 
+    def get_text_from_event(self, event: Dict[str, Any]) -> str:
+        """Format a colored text output from event.
+
+        Args:
+            event (Dict[str, Any]): Event
+
+        Returns:
+            str: Formatted and colored text
+        """
+
+        display_txt = (
+                f'{event["start"].strftime("%H:%M")} - {event["summary"]}'
+            )
+        default_color = self.calendar_params[event["cal_code"]].get(
+                "default_color", "default"
+            )
+        event_color = GCAL_COLORS.get(event["color_id"], default_color)
+        colored = self.create_msg(display_txt, event_color)
+
+        return colored
+
+    def prep_agenda(self) -> NoReturn:
+        """Prepares the agenda to add the events later.
+        """
+        self.agenda = {
+                (self.time_min + timedelta(days=i)).date(): []
+                for i in range((self.time_max-self.time_min).days+1)
+            }
+
     def add_events_agenda(self, events: List[Dict[str, Any]]) -> NoReturn:
         """Add events to the weekly agenda in the string format.
 
         Args:
             events (List[Dict[str, Any]]): List of events
         """
-        for e in events:
-            day_name = e["start"].strftime("%A")
-            display_txt = f'{e["start"].strftime("%H:%M")} - {e["summary"]}'
-            default_color = self.calendar_params[e["cal_code"]].get(
-                "default_color", "default"
-            )
-            event_color = GCAL_COLORS.get(e["color_id"], default_color)
-            colored = self.create_msg(display_txt, event_color)
-            self.agenda[day_name].append(colored)
+        for event in events:
+            start_date = event["start"].date()
+            if start_date in self.agenda:
+                self.agenda[start_date].append(event)
 
-        # Workaround to make word wraping work right
-        max_len = max(map(len, self.agenda.values()))
+    def create_formatted_calendar(self) -> NoReturn:
+
+        self.fmt_cal = {}
         for day, events in self.agenda.items():
-            self.agenda[day] += [""] * (max_len - len(events))
+            weekday = day.strftime("%A")
+            if weekday not in self.fmt_cal:
+                if day.day == 1 and weekday != "Sunday":
+                    start_of_week = day - timedelta(days=day.weekday() + 1)
+                    while start_of_week.strftime("%A") != weekday:
+                        self.fmt_cal[start_of_week.strftime("%A")] = [""]
+                        start_of_week += timedelta(days=1)
+                self.fmt_cal[weekday] = []
 
-    def tabulate_events(self) -> NoReturn:
-        """Tabulates and prints the events to the console."""
-        vert_size = os.get_terminal_size().columns
-        table = tabulate(
-            self.agenda,
-            headers="keys",
-            tablefmt="fancy_grid",
-            maxcolwidths=vert_size // 7 - 2,
-        )
-        print(table)
+            self.fmt_cal[weekday].append(
+                    self.create_msg(day.strftime("%d."), "brightwhite")
+            )
+            for event in events:
+                self.fmt_cal[weekday][-1] += (
+                        "\n" + self.get_text_from_event(event)
+                    )
+
+        self.fill_event_matrix()
+
+    def fill_event_matrix(self, fill_value: str = "") -> NoReturn:
+        """Fill the matrix with a fill_value so it is symmetrical.
+
+        Args:
+            fill_value (str): Value to be used to fill the lists.
+        """
+        max_len = max(map(len, self.fmt_cal.values()))
+        if max_len == 0:
+            self.fmt_cal = {key: [fill_value] for key in self.fmt_cal.keys()}
+        else:
+            for day, events in self.fmt_cal.items():
+                self.fmt_cal[day] += [fill_value] * (max_len - len(events))
+
+    def print_events(self, format: str = "day") -> NoReturn:
+        """Prints the events using the given format.
+
+        Args:
+            format (str): Format used to print the events
+        """
+
+        self.add_events_agenda(self.events)
+
+        if format.startswith("d"):
+            for day, events in self.agenda.items():
+                if len(events) > 0:
+                    print()
+                    print(self.create_msg(
+                        day.strftime("%d/%m - %A:"), "brightwhite"
+                    ))
+                    for event in events:
+                        print(" ", self.get_text_from_event(event))
+        else:
+            self.create_formatted_calendar()
+
+            vert_size = os.get_terminal_size().columns
+
+            output_events = tabulate(
+                self.fmt_cal,
+                headers="keys",
+                tablefmt=self.art_style,
+                maxcolwidths=vert_size // 7 - 2,
+                disable_numparse=True,
+            )
+            print(output_events)

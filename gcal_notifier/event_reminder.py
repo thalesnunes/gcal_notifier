@@ -1,7 +1,8 @@
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, NoReturn
 
-from gcal_notifier.utils import CMD, run_notify
+from gcal_notifier.globals import CMD
+from gcal_notifier.utils import run_notify
 
 
 class SimpleGCalendarNotifier:
@@ -27,7 +28,6 @@ class SimpleGCalendarNotifier:
 
         self.events = events
         self.general_params = general_params
-        self.search_reminders()
 
     def search_reminders(self) -> NoReturn:
         """Search current reminders to notify."""
@@ -38,7 +38,7 @@ class SimpleGCalendarNotifier:
                 continue
             for reminder in event["reminders"]:
                 if now < start - timedelta(minutes=reminder):
-                    return
+                    continue
                 elif now >= start - timedelta(
                     minutes=reminder
                 ) and now < start - timedelta(minutes=reminder - 1):

@@ -1257,7 +1257,7 @@ def _wrap_text_to_colwidths(list_of_lists, colwidths, numparses=True):
                 continue
 
             if width is not None:
-                wrapper = _CustomTextWrap(width=width)
+                wrapper = _CustomTextWrap(width=width, replace_whitespace=False)
                 wrapped = wrapper.wrap(cell)
                 new_row.append("\n".join(wrapped))
             else:
