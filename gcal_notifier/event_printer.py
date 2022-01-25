@@ -121,7 +121,8 @@ class SimpleGCalendarPrinter:
         """
         for event in events:
             start_date = event["start"].date()
-            self.agenda[start_date].append(event)
+            if start_date in self.agenda:
+                self.agenda[start_date].append(event)
 
     def create_formatted_calendar(self) -> NoReturn:
 
@@ -129,6 +130,11 @@ class SimpleGCalendarPrinter:
         for day, events in self.agenda.items():
             weekday = day.strftime("%A")
             if weekday not in self.fmt_cal:
+                if day.day == 1 and weekday != "Sunday":
+                    start_of_week = day - timedelta(days=day.weekday() + 1)
+                    while start_of_week.strftime("%A") != weekday:
+                        self.fmt_cal[start_of_week.strftime("%A")] = [""]
+                        start_of_week += timedelta(days=1)
                 self.fmt_cal[weekday] = []
 
             self.fmt_cal[weekday].append(
@@ -162,14 +168,16 @@ class SimpleGCalendarPrinter:
         """
 
         self.add_events_agenda(self.events)
+
         if format.startswith("d"):
             for day, events in self.agenda.items():
-                print(
-                    self.create_msg(day.strftime("%d/%m - %A:"), "brightwhite")
-                )
-                for event in events:
-                    print(" ", self.get_text_from_event(event))
-                print()
+                if len(events) > 0:
+                    print()
+                    print(self.create_msg(
+                        day.strftime("%d/%m - %A:"), "brightwhite"
+                    ))
+                    for event in events:
+                        print(" ", self.get_text_from_event(event))
         else:
             self.create_formatted_calendar()
 
@@ -180,5 +188,6 @@ class SimpleGCalendarPrinter:
                 headers="keys",
                 tablefmt=self.art_style,
                 maxcolwidths=vert_size // 7 - 2,
+                disable_numparse=True,
             )
             print(output_events)
