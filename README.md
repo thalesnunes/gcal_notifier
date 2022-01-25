@@ -99,6 +99,8 @@ A sample of every configuration supported is:
 single_events = true
 # How to order the events. Default (and recommended) is startTime
 order_by = startTime
+# Custom notification sound, if you would like to choose (it has to be a wav file).
+notification_sound = ~/Music/my_notification.wav
 
 [CALENDAR1]
 # Name given to the calendar. Default is 'Calendar'
