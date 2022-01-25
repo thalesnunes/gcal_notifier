@@ -94,9 +94,13 @@ class SimpleGCalendarPrinter:
             str: Formatted and colored text
         """
 
-        display_txt = (
-            f'{event["start"].strftime("%H:%M")} - {event["summary"]}'
-        )
+        if event["end"] - event["start"] < timedelta(days=1):
+            display_txt = (
+                f'{event["start"].strftime("%H:%M")} - {event["summary"]}'
+            )
+        else:
+            display_txt = event["summary"]
+
         default_color = self.calendar_params[event["cal_code"]].get(
             "default_color", "default"
         )
@@ -119,9 +123,11 @@ class SimpleGCalendarPrinter:
             events (List[Dict[str, Any]]): List of events
         """
         for event in events:
-            start_date = event["start"].date()
-            if start_date in self.agenda:
-                self.agenda[start_date].append(event)
+            duration = event["end"] - event["start"] - timedelta(seconds=1)
+            for to_add in range(duration.days + 1):
+                event_date = event["start"].date() + timedelta(days=to_add)
+                if event_date in self.agenda:
+                    self.agenda[event_date].append(event)
 
     def create_formatted_calendar(self) -> NoReturn:
 
@@ -137,7 +143,7 @@ class SimpleGCalendarPrinter:
                 self.fmt_cal[weekday] = []
 
             self.fmt_cal[weekday].append(
-                self.create_msg(day.strftime("%d."), "brightwhite")
+                self.create_msg(day.strftime("%d"), "brightwhite")
             )
             for event in events:
                 self.fmt_cal[weekday][-1] += "\n" + self.get_text_from_event(
