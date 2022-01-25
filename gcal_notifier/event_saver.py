@@ -7,7 +7,6 @@ from gcsa.event import Event
 
 from gcal_notifier.globals import CACHE
 
-
 TZINFO = datetime.utcnow().astimezone().tzinfo
 
 

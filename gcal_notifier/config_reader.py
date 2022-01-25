@@ -52,12 +52,12 @@ def merge_general(config: ConfigParser) -> Dict[str, Any]:
     user_params = {
         "single_events": config["GENERAL"].getboolean("single_events"),
         "order_by": config["GENERAL"].get("order_by"),
-        "notification_sound": config["GENERAL"].getpath("notification_sound")
+        "notification_sound": config["GENERAL"].getpath("notification_sound"),
     }
     return {
-            **GENERAL_PARAMS,
-            **{k: v for k, v in user_params.items() if v is not None},
-        }
+        **GENERAL_PARAMS,
+        **{k: v for k, v in user_params.items() if v is not None},
+    }
 
 
 def merge_calendars(config: ConfigParser) -> Dict[str, Any]:
@@ -103,8 +103,8 @@ def init_config(
     """
 
     config = ConfigParser(
-            converters={"list": parse_int_list, "path": parse_path}
-            )
+        converters={"list": parse_int_list, "path": parse_path}
+    )
     config.read(config_path)
     validate_config(config)
     general_params = merge_general(config)

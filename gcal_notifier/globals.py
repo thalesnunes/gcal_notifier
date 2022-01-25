@@ -1,6 +1,5 @@
 from pathlib import Path
 
-
 ROOT_DIR = Path(__file__).parent
 
 CONFIG = Path("~/.config/gcal_notifier").expanduser()

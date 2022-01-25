@@ -31,16 +31,19 @@ Usage
 -----
 
 ```sh
-gcal_notifier [get|remind]
-usage: gcal_notifier [-h] [get|remind]
+gcal_notifier --help
+usage: gcal_notifier [-h] {get,notify,print} ...
 
-A simple and lightweight GoogleCalendar notifier for Linux
+A simple and lightweight GoogleCalendar notifier for Linux.
 
 positional arguments:
-  [get|remind]  Use "get" to get events and "remind" to run reminders
+  {get,notify,print}  Invoking a subcommand with --help prints subcommand usage.
+    get               fetch events from Google Calendar and save them in cache.
+    notify            run reminders with cached events.
+    print             print events to the console.
 
-optional arguments:
-  -h, --help      show this help message and exit
+options:
+  -h, --help          show this help message and exit
 ```
 
 ### Credentials

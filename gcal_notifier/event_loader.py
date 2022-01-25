@@ -37,7 +37,7 @@ def str_to_datetime(date_str: str) -> datetime:
 
 
 def load_saved_events(
-    path: Path = CACHE / "events_notify.json"
+    path: Path = CACHE / "events_notify.json",
 ) -> List[Dict[str, Any]]:
     """Load events file and transforma datetime strings into datetime objects.
 

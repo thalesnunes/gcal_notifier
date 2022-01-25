@@ -13,35 +13,35 @@ def init_parser() -> argparse.ArgumentParser:
     )
 
     subparsers = main_parser.add_subparsers(
-            help="Invoking a subcommand with --help prints subcommand usage.",
-            dest="command",
+        help="Invoking a subcommand with --help prints subcommand usage.",
+        dest="command",
     )
     subparsers.required = True
 
     subparsers.add_parser(
-            "get",
-            help="fetch events from Google Calendar and save them in cache.",
-            description="Fetch events from Google Calendar and save them in cache."  # noqa
+        "get",
+        help="fetch events from Google Calendar and save them in cache.",
+        description="Fetch events from Google Calendar and save them in cache.",  # noqa
     )
 
     subparsers.add_parser(
-            "notify",
-            help="run reminders with cached events.",
-            description="Run reminders with cached events.",
+        "notify",
+        help="run reminders with cached events.",
+        description="Run reminders with cached events.",
     )
 
     parser_print = subparsers.add_parser(
-            "print",
-            help="print events to the console.",
-            description="Print events to the console.",
+        "print",
+        help="print events to the console.",
+        description="Print events to the console.",
     )
     parser_print.add_argument(
-            "period",
-            type=str,
-            action="store",
-            choices=["day", "week", "month", "d", "w", "m"],
-            nargs="?",
-            default="day",
+        "period",
+        type=str,
+        action="store",
+        choices=["day", "week", "month", "d", "w", "m"],
+        nargs="?",
+        default="day",
     )
 
     return main_parser

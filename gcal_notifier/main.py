@@ -27,11 +27,11 @@ def run_getter(
 
     getter.load_calendars(define_period("day"))
     getter.load_events()
-    save_events(getter.events, file_path=CACHE/"events_notify.json")
+    save_events(getter.events, file_path=CACHE / "events_notify.json")
 
     getter.load_calendars(define_period("month"))
     getter.load_events()
-    save_events(getter.events, file_path=CACHE/"events_print.json")
+    save_events(getter.events, file_path=CACHE / "events_print.json")
 
 
 def run_notifier(
@@ -43,7 +43,7 @@ def run_notifier(
         general_params (Dict[str, Any]): General params
         calendar_params (Dict[str, Any]): Calendar params
     """
-    saved_events = load_saved_events(CACHE/"events_notify.json")
+    saved_events = load_saved_events(CACHE / "events_notify.json")
     notifier = SimpleGCalendarNotifier(
         saved_events, general_params, calendar_params
     )
@@ -54,7 +54,7 @@ def run_printer(
     general_params: Dict[str, Any],
     calendar_params: Dict[str, Any],
     period: Tuple[datetime, datetime],
-    format: str = "day"
+    format: str = "day",
 ) -> NoReturn:
     """Run SimpleGCalendarPrinter with user configs.
 
@@ -63,7 +63,7 @@ def run_printer(
         calendar_params (Dict[str, Any]): Calendar params
         format (str): Format to use when printing events
     """
-    saved_events = load_saved_events(CACHE/"events_print.json")
+    saved_events = load_saved_events(CACHE / "events_print.json")
     printer = SimpleGCalendarPrinter(
         saved_events, general_params, calendar_params, period, format=format
     )
@@ -71,8 +71,7 @@ def run_printer(
 
 
 def gcal_notifier() -> NoReturn:
-    """Run gcal_notifier cli.
-    """
+    """Run gcal_notifier cli."""
 
     args = cli()
     general_params, calendar_params = init_config()

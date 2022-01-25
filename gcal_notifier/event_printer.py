@@ -1,5 +1,5 @@
-from datetime import datetime, timedelta
 import os
+from datetime import datetime, timedelta
 from typing import Any, Dict, List, NoReturn, Tuple
 
 from gcal_notifier.globals import COLORS, GCAL_COLORS
@@ -95,23 +95,22 @@ class SimpleGCalendarPrinter:
         """
 
         display_txt = (
-                f'{event["start"].strftime("%H:%M")} - {event["summary"]}'
-            )
+            f'{event["start"].strftime("%H:%M")} - {event["summary"]}'
+        )
         default_color = self.calendar_params[event["cal_code"]].get(
-                "default_color", "default"
-            )
+            "default_color", "default"
+        )
         event_color = GCAL_COLORS.get(event["color_id"], default_color)
         colored = self.create_msg(display_txt, event_color)
 
         return colored
 
     def prep_agenda(self) -> NoReturn:
-        """Prepares the agenda to add the events later.
-        """
+        """Prepares the agenda to add the events later."""
         self.agenda = {
-                (self.time_min + timedelta(days=i)).date(): []
-                for i in range((self.time_max-self.time_min).days+1)
-            }
+            (self.time_min + timedelta(days=i)).date(): []
+            for i in range((self.time_max - self.time_min).days + 1)
+        }
 
     def add_events_agenda(self, events: List[Dict[str, Any]]) -> NoReturn:
         """Add events to the weekly agenda in the string format.
@@ -138,12 +137,12 @@ class SimpleGCalendarPrinter:
                 self.fmt_cal[weekday] = []
 
             self.fmt_cal[weekday].append(
-                    self.create_msg(day.strftime("%d."), "brightwhite")
+                self.create_msg(day.strftime("%d."), "brightwhite")
             )
             for event in events:
-                self.fmt_cal[weekday][-1] += (
-                        "\n" + self.get_text_from_event(event)
-                    )
+                self.fmt_cal[weekday][-1] += "\n" + self.get_text_from_event(
+                    event
+                )
 
         self.fill_event_matrix()
 
@@ -173,9 +172,11 @@ class SimpleGCalendarPrinter:
             for day, events in self.agenda.items():
                 if len(events) > 0:
                     print()
-                    print(self.create_msg(
-                        day.strftime("%d/%m - %A:"), "brightwhite"
-                    ))
+                    print(
+                        self.create_msg(
+                            day.strftime("%d/%m - %A:"), "brightwhite"
+                        )
+                    )
                     for event in events:
                         print(" ", self.get_text_from_event(event))
         else:

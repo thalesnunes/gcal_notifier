@@ -84,8 +84,7 @@ class SimpleGCalendarGetter:
         event.reminders = sorted(new_reminders, reverse=True)
 
     def load_events(self) -> NoReturn:
-        """Load event from fetched calendar.
-        """
+        """Load event from fetched calendar."""
         self.events = []
         for cal_code, calendar in self.calendars.items():
             for event in calendar:
