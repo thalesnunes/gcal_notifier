@@ -36,14 +36,16 @@ def str_to_datetime(date_str: str) -> datetime:
     return datetime.strptime(date_str, "%Y-%m-%d %H:%M:%S%z")
 
 
-def load_saved_events() -> List[Dict[str, Any]]:
+def load_saved_events(
+    path: Path = CACHE / "events_notify.json"
+) -> List[Dict[str, Any]]:
     """Load events file and transforma datetime strings into datetime objects.
 
     Returns:
         List[Dict[str, Any]]: List of events as dictionaries
     """
 
-    json_events = load_events_file()
+    json_events = load_events_file(path)
     for event in json_events:
         for att in ["start", "end"]:
             event[att] = str_to_datetime(event[att])
