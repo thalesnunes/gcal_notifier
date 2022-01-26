@@ -1,7 +1,7 @@
 from configparser import ConfigParser
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, NoReturn, Tuple
+from typing import Any, Dict, List, Tuple
 
 from gcsa.event import Event
 from gcsa.google_calendar import GoogleCalendar
@@ -36,12 +36,12 @@ class SimpleGCalendarGetter:
         self,
         general_params: Dict[str, Any],
         calendar_params: Dict[str, Any],
-    ) -> NoReturn:
+    ) -> None:
 
         self.general_params = general_params
         self.calendar_params = calendar_params
 
-    def load_calendars(self, period: Tuple[datetime, datetime]) -> NoReturn:
+    def load_calendars(self, period: Tuple[datetime, datetime]) -> None:
         """Load calendars from Google using the configs passed to the class.
 
         Args:
@@ -66,7 +66,7 @@ class SimpleGCalendarGetter:
                 **conn_params
             ).get_events(**event_params)
 
-    def set_reminders(self, event: Event) -> NoReturn:
+    def set_reminders(self, event: Event) -> None:
         """Set reminders to event.
 
         Args:
@@ -83,7 +83,7 @@ class SimpleGCalendarGetter:
 
         event.reminders = sorted(new_reminders, reverse=True)
 
-    def load_events(self) -> NoReturn:
+    def load_events(self) -> None:
         """Load event from fetched calendar."""
         self.events = []
         for cal_code, calendar in self.calendars.items():

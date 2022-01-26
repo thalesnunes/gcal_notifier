@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 from datetime import datetime
-from typing import Any, Dict, NoReturn, Tuple
+from typing import Any, Dict, Tuple
 
 from gcal_notifier.cli import cli
 from gcal_notifier.config_reader import init_config
@@ -16,7 +16,7 @@ from gcal_notifier.utils import define_period
 def run_getter(
     general_params: Dict[str, Any],
     calendar_params: Dict[str, Any],
-) -> NoReturn:
+) -> None:
     """Run SimpleGCalendarGetter with user configs.
 
     Args:
@@ -36,7 +36,7 @@ def run_getter(
 
 def run_notifier(
     general_params: Dict[str, Any], calendar_params: Dict[str, Any]
-) -> NoReturn:
+) -> None:
     """Run SimpleGCalendarNotifier with user configs.
 
     Args:
@@ -55,7 +55,7 @@ def run_printer(
     calendar_params: Dict[str, Any],
     period: Tuple[datetime, datetime],
     format: str = "day",
-) -> NoReturn:
+) -> None:
     """Run SimpleGCalendarPrinter with user configs.
 
     Args:
@@ -70,7 +70,7 @@ def run_printer(
     printer.print_events(format)
 
 
-def gcal_notifier() -> NoReturn:
+def gcal_notifier() -> None:
     """Run gcal_notifier cli."""
 
     args = cli()

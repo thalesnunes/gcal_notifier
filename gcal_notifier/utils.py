@@ -3,7 +3,7 @@ import shlex
 import subprocess
 from datetime import datetime, timedelta
 from pathlib import Path
-from typing import NoReturn, Tuple
+from typing import Tuple
 
 import simpleaudio as sa
 
@@ -24,7 +24,7 @@ def is_sound_valid(wav_file: str) -> bool:
 
 def make_sound(
     sound_path: Path = ROOT_DIR / "resources" / "pop.wav",
-) -> NoReturn:
+) -> None:
     """Play sound in sound_path.
 
     Args:
@@ -45,7 +45,7 @@ def make_sound(
 def run_notify(
     command: str = CMD,
     sound_path: Path = ROOT_DIR / "resources" / "pop.wav",
-) -> NoReturn:
+) -> None:
     """Run notification command.
 
     Args:

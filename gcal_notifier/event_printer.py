@@ -1,6 +1,6 @@
 import os
-from datetime import datetime, timedelta
-from typing import Any, Dict, List, NoReturn, Tuple
+from datetime import date, datetime, timedelta
+from typing import Any, Dict, List, Tuple
 
 from gcal_notifier.globals import COLORS, GCAL_COLORS
 from gcal_notifier.tabulate import tabulate
@@ -30,6 +30,8 @@ class SimpleGCalendarPrinter:
     art_style: str
     time_min: datetime
     time_max: datetime
+    agenda: Dict[date, List[Dict[str, Any]]]
+    fmt_cal: Dict[str, List[str]]
 
     def __init__(
         self,
@@ -40,7 +42,21 @@ class SimpleGCalendarPrinter:
         use_color: bool = True,
         art_style: str = "fancy_grid",
         format: str = "day",
-    ) -> NoReturn:
+    ) -> None:
+        """__init__.
+
+        Args:
+            events (List[Dict[str, Any]]): events
+            general_params (Dict[str, Any]): general_params
+            calendar_params (Dict[str, Any]): calendar_params
+            period (Tuple[datetime, datetime]): period
+            use_color (bool): use_color
+            art_style (str): art_style
+            format (str): format
+
+        Returns:
+            None:
+        """
 
         self.events = events
 
@@ -109,14 +125,14 @@ class SimpleGCalendarPrinter:
 
         return colored
 
-    def prep_agenda(self) -> NoReturn:
+    def prep_agenda(self) -> None:
         """Prepares the agenda to add the events later."""
         self.agenda = {
             (self.time_min + timedelta(days=i)).date(): []
             for i in range((self.time_max - self.time_min).days + 1)
         }
 
-    def add_events_agenda(self, events: List[Dict[str, Any]]) -> NoReturn:
+    def add_events_agenda(self, events: List[Dict[str, Any]]) -> None:
         """Add events to the weekly agenda in the string format.
 
         Args:
@@ -129,7 +145,9 @@ class SimpleGCalendarPrinter:
                 if event_date in self.agenda:
                     self.agenda[event_date].append(event)
 
-    def create_formatted_calendar(self) -> NoReturn:
+    def create_formatted_calendar(self) -> None:
+        """Creates the formatted calendar for "week" and "month" formats.
+        """
 
         self.fmt_cal = {}
         for day, events in self.agenda.items():
@@ -152,7 +170,7 @@ class SimpleGCalendarPrinter:
 
         self.fill_event_matrix()
 
-    def fill_event_matrix(self, fill_value: str = "") -> NoReturn:
+    def fill_event_matrix(self, fill_value: str = "") -> None:
         """Fill the matrix with a fill_value so it is symmetrical.
 
         Args:
@@ -165,7 +183,7 @@ class SimpleGCalendarPrinter:
             for day, events in self.fmt_cal.items():
                 self.fmt_cal[day] += [fill_value] * (max_len - len(events))
 
-    def print_events(self, format: str = "day") -> NoReturn:
+    def print_events(self, format: str = "day") -> None:
         """Prints the events using the given format.
 
         Args:

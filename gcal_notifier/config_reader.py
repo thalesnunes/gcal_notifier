@@ -1,6 +1,6 @@
 from configparser import ConfigParser
 from pathlib import Path
-from typing import Any, Dict, List, NoReturn, Tuple
+from typing import Any, Dict, List, Tuple
 
 from gcal_notifier.globals import CONFIG, GENERAL_PARAMS
 
@@ -29,7 +29,7 @@ def parse_path(input: str) -> Path:
     return Path(input).expanduser()
 
 
-def validate_config(config: ConfigParser) -> NoReturn:
+def validate_config(config: ConfigParser) -> None:
     """Validate sections of config file.
 
     Args:
