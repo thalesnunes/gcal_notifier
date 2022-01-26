@@ -42,7 +42,7 @@ __version__ = "0.8.10"
 
 
 # minimum extra space in headers
-MIN_PADDING = 2
+MIN_PADDING = 0
 
 # Whether or not to preserve leading/trailing whitespace in data.
 PRESERVE_WHITESPACE = False
