@@ -72,7 +72,9 @@ class SimpleGCalendarGetter:
         Args:
             event (Event): event
         """
-        if event.default_reminders:
+        if event.default_reminders or self.calendar_params[event.cal_code].get(
+            "force_default_reminders", False
+        ):
             event_calendar = self.calendar_params[event.cal_code]
             new_reminders = event_calendar.get("default_reminders", [])
         else:

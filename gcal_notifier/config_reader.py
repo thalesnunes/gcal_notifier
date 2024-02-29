@@ -83,6 +83,7 @@ def merge_calendars(config: ConfigParser) -> Dict[str, Any]:
             "credentials": cal.getpath,
             "calendar": cal.get,
             "default_reminders": cal.getlist,
+            "force_default_reminders": cal.getboolean,
             "default_color": cal.get,
         }
 
