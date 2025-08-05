@@ -9,7 +9,8 @@ CACHE = Path("~/.cache/gcal_notifier").expanduser()
 GENERAL_PARAMS = {
     "order_by": "startTime",
     "single_events": True,
-    "notification_sound": ROOT_DIR / "resources" / "pop.wav",
+    "notification_sound": True,
+    "notification_sound_path": ROOT_DIR / "resources" / "pop.wav",
 }
 
 CMD = "notify-send -u critical -a GoogleCalendar {calendar} {title}"

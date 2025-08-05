@@ -102,8 +102,10 @@ A sample of every configuration supported is:
 single_events = true
 # How to order the events. Default (and recommended) is startTime
 order_by = startTime
+# Flag to define if the python package should play sound when notifying
+notification_sound = true
 # Custom notification sound, if you would like to choose (it has to be a wav file).
-notification_sound = ~/Music/my_notification.wav
+notification_sound_path = ~/Music/my_notification.wav
 
 [CALENDAR1]
 # Name given to the calendar. Default is 'Calendar'

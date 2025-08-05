@@ -44,6 +44,7 @@ def make_sound(
 
 def run_notify(
     command: str = CMD,
+    sound_notification_on: bool = True,
     sound_path: Path = ROOT_DIR / "resources" / "pop.wav",
 ) -> None:
     """Run notification command.
@@ -53,7 +54,8 @@ def run_notify(
         sound_path (Path): Path to a wav sound file
     """
     subprocess.run(shlex.split(command))
-    make_sound(sound_path)
+    if sound_notification_on:
+        make_sound(sound_path)
 
 
 def define_period(period: str = "day") -> Tuple[datetime, datetime]:
