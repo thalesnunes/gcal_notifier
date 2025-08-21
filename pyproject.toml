@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "gcal_notifier"
-version = "1.1.5"
+version = "1.1.6"
 description = "A simple and lightweight GoogleCalendar notifier for Linux"
 authors = ["Thales Nunes <thalesaknunes22@gmail.com>"]
 license = "MIT"
