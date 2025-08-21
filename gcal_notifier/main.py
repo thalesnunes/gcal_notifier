@@ -82,4 +82,8 @@ def gcal_notifier() -> None:
         run_notifier(general_params, calendar_params)
     elif args.command == "print":
         period = define_period(args.period)
-        run_printer(general_params, calendar_params, period, args.period)
+        fmt = args.period if args.period != "next" else "next"
+        run_printer(general_params, calendar_params, period, fmt)
+
+if __name__ == "__main__":
+    gcal_notifier()

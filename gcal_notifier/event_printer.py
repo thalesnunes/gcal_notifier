@@ -146,8 +146,7 @@ class SimpleGCalendarPrinter:
                     self.agenda[event_date].append(event)
 
     def create_formatted_calendar(self) -> None:
-        """Creates the formatted calendar for "week" and "month" formats.
-        """
+        """Creates the formatted calendar for "week" and "month" formats."""
 
         self.fmt_cal = {}
         for day, events in self.agenda.items():
@@ -192,7 +191,19 @@ class SimpleGCalendarPrinter:
 
         self.add_events_agenda(self.events)
 
-        if format.startswith("d"):
+        if format == "next":
+            next_event_found = False
+            for day, events in self.agenda.items():
+                if next_event_found:
+                    break
+                for event in events:
+                    if event["start"] > datetime.now().astimezone():
+                        print(
+                            f'{event["start"].strftime("%a, %H:%M")} ({event["calendar"]}) - {event["summary"]}'
+                        )
+                        next_event_found = True
+                        break
+        elif format.startswith("d"):
             for day, events in self.agenda.items():
                 if len(events) > 0:
                     print()

@@ -69,7 +69,11 @@ def define_period(period: str = "day") -> Tuple[datetime, datetime]:
     """
     today = datetime.now()
 
-    if period.startswith("d"):
+    if period == "next":
+        time_min = today
+        time_max = today + timedelta(days=7)
+
+    elif period.startswith("d"):
         time_min = today
         time_max = today + timedelta(days=1)
 

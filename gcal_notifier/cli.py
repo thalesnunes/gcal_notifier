@@ -39,7 +39,7 @@ def init_parser() -> argparse.ArgumentParser:
         "period",
         type=str,
         action="store",
-        choices=["day", "week", "month", "d", "w", "m"],
+        choices=["day", "week", "month", "next", "d", "w", "m", "n"],
         nargs="?",
         default="day",
     )
