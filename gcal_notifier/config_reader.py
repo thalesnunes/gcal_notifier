@@ -52,8 +52,12 @@ def merge_general(config: ConfigParser) -> Dict[str, Any]:
     user_params = {
         "single_events": config["GENERAL"].getboolean("single_events"),
         "order_by": config["GENERAL"].get("order_by"),
-        "notification_sound": config["GENERAL"].getboolean("notification_sound"),
-        "notification_sound_path": config["GENERAL"].getpath("notification_sound_path"),
+        "notification_sound": config["GENERAL"].getboolean(
+            "notification_sound"
+        ),
+        "notification_sound_path": config["GENERAL"].getpath(
+            "notification_sound_path"
+        ),
     }
     return {
         **GENERAL_PARAMS,

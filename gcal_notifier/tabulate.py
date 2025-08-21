@@ -194,9 +194,7 @@ def _html_row_with_attrs(celltag, unsafe, cell_values, colwidths, colaligns):
     return rowhtml
 
 
-def _moin_row_with_attrs(
-    celltag, cell_values, colwidths, colaligns, header=""
-):
+def _moin_row_with_attrs(celltag, cell_values, colwidths, colaligns, header=""):
     alignment = {
         "left": "",
         "right": '<style="text-align: right;">',
@@ -204,9 +202,7 @@ def _moin_row_with_attrs(
         "decimal": '<style="text-align: right;">',
     }
     values_with_attrs = [
-        "{0}{1} {2} ".format(
-            celltag, alignment.get(a, ""), header + c + header
-        )
+        "{0}{1} {2} ".format(celltag, alignment.get(a, ""), header + c + header)
         for c, a in zip(cell_values, colaligns)
     ]
     return "".join(values_with_attrs) + "||"
@@ -825,8 +821,7 @@ def _align_column_choose_padfn(strings, alignment, has_invisible):
             decimals = [_afterpoint(s) for s in strings]
         maxdecimals = max(decimals)
         strings = [
-            s + (maxdecimals - decs) * " "
-            for s, decs in zip(strings, decimals)
+            s + (maxdecimals - decs) * " " for s, decs in zip(strings, decimals)
         ]
         padfn = _padleft
     elif not alignment:
@@ -1223,9 +1218,7 @@ def _normalize_tabular_data(tabular_data, headers, showindex="default"):
         rows = _prepend_row_index(rows, index)
     elif isinstance(showindex, Iterable) and not showindex_is_a_str:
         rows = _prepend_row_index(rows, list(showindex))
-    elif showindex == "always" or (
-        _bool(showindex) and not showindex_is_a_str
-    ):
+    elif showindex == "always" or (_bool(showindex) and not showindex_is_a_str):
         if index is None:
             index = list(range(len(rows)))
         rows = _prepend_row_index(rows, index)
@@ -1257,9 +1250,7 @@ def _wrap_text_to_colwidths(list_of_lists, colwidths, numparses=True):
                 continue
 
             if width is not None:
-                wrapper = _CustomTextWrap(
-                    width=width, replace_whitespace=False
-                )
+                wrapper = _CustomTextWrap(width=width, replace_whitespace=False)
                 wrapped = wrapper.wrap(cell)
                 new_row.append("\n".join(wrapped))
             else:
@@ -1720,9 +1711,7 @@ def tabulate(
         else [0] * len(cols)
     )
     cols = [
-        _align_column(
-            c, a, minw, has_invisible, enable_widechars, is_multiline
-        )
+        _align_column(c, a, minw, has_invisible, enable_widechars, is_multiline)
         for c, a, minw in zip(cols, aligns, minwidths)
     ]
 
@@ -2075,11 +2064,7 @@ class _CustomTextWrap(textwrap.TextWrapper):
                 cur_len = sum(map(self._len, cur_line))
 
             # If the last chunk on this line is all whitespace, drop it.
-            if (
-                self.drop_whitespace
-                and cur_line
-                and cur_line[-1].strip() == ""
-            ):
+            if self.drop_whitespace and cur_line and cur_line[-1].strip() == "":
                 cur_len -= self._len(cur_line[-1])
                 del cur_line[-1]
 
@@ -2202,7 +2187,7 @@ def _main():
             print(usage)
             sys.exit(0)
     files = [sys.stdin] if not args else args
-    with (sys.stdout if outfile == "-" else open(outfile, "w")) as out:
+    with sys.stdout if outfile == "-" else open(outfile, "w") as out:
         for f in files:
             if f == "-":
                 f = sys.stdin
