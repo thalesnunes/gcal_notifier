@@ -115,7 +115,7 @@ class SimpleGCalendarPrinter:
                 f'{event["start"].strftime("%H:%M")} - {event["summary"]}'
             )
         else:
-            display_txt = event["summary"]
+            display_txt = f'{event["summary"]}'
 
         default_color = self.calendar_params[event["cal_code"]].get(
             "default_color", "default"
@@ -128,7 +128,7 @@ class SimpleGCalendarPrinter:
     def prep_agenda(self) -> None:
         """Prepares the agenda to add the events later."""
         self.agenda = {
-            (self.time_min + timedelta(days=i)).date(): []
+            (self.time_min + timedelta(days=i)): []
             for i in range((self.time_max - self.time_min).days + 1)
         }
 

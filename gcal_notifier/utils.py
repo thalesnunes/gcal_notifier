@@ -89,4 +89,4 @@ def define_period(period: str = "day") -> Tuple[datetime, datetime]:
             day=calendar.monthrange(today.year, today.month)[1]
         )
 
-    return time_min, time_max
+    return time_min.date(), time_max.date()
