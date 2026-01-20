@@ -1,5 +1,6 @@
 from configparser import ConfigParser
 from datetime import datetime
+from os.path import expandvars
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
@@ -107,6 +108,7 @@ class SimpleGCalendarGetter:
         Returns:
             GoogleCalendar: GoogleCalendar client
         """
+        credentials = expandvars(credentials)
         try:
             return GoogleCalendar(
                 calendar=calendar, credentials_path=credentials

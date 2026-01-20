@@ -1,10 +1,13 @@
+from os import environ
 from pathlib import Path
 
 ROOT_DIR = Path(__file__).parent
 
-CONFIG = Path("~/.config/gcal_notifier").expanduser()
+NAME = "gcal_notifier"
 
-CACHE = Path("~/.cache/gcal_notifier").expanduser()
+CONFIG = Path(environ.get("XDG_CONFIG_HOME", "~/.config")).expanduser() / NAME
+
+CACHE = Path(environ.get("XDG_CACHE_HOME", "~/.cache")).expanduser() / NAME
 
 GENERAL_PARAMS = {
     "order_by": "startTime",
