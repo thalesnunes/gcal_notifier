@@ -108,10 +108,9 @@ class SimpleGCalendarGetter:
         Returns:
             GoogleCalendar: GoogleCalendar client
         """
-        credentials = expandvars(credentials)
         try:
             return GoogleCalendar(
-                calendar=calendar, credentials_path=credentials
+                calendar=calendar, credentials_path=expandvars(credentials)
             )
         except RefreshError:
             (credentials.parent / "token.pickle").unlink()
