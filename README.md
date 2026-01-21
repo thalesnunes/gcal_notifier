@@ -106,6 +106,8 @@ order_by = startTime
 notification_sound = true
 # Custom notification sound, if you would like to choose (it has to be a wav file).
 notification_sound_path = ~/Music/my_notification.wav
+# Do you want the `print` subcommand to include calendar names?
+print_calendar_names = False
 
 [CALENDAR1]
 # Name given to the calendar. Default is 'Calendar'

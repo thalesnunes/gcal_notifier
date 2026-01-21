@@ -11,6 +11,7 @@ GENERAL_PARAMS = {
     "single_events": True,
     "notification_sound": True,
     "notification_sound_path": ROOT_DIR / "resources" / "pop.wav",
+    "print_calendar_names": False,
 }
 
 CMD = "notify-send -u critical -a GoogleCalendar {calendar} {title}"

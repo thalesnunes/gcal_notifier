@@ -58,6 +58,9 @@ def merge_general(config: ConfigParser) -> Dict[str, Any]:
         "notification_sound_path": config["GENERAL"].getpath(
             "notification_sound_path"
         ),
+        "print_calendar_names": config["GENERAL"].getboolean(
+            "print_calendar_names"
+        ),
     }
     return {
         **GENERAL_PARAMS,

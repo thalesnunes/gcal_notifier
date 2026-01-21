@@ -117,6 +117,9 @@ class SimpleGCalendarPrinter:
         else:
             display_txt = f'{event["summary"]}'
 
+        if self.general_params["print_calendar_names"]:
+            display_txt += f' [{event["calendar"]}]'
+
         default_color = self.calendar_params[event["cal_code"]].get(
             "default_color", "default"
         )
