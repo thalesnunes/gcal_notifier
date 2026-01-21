@@ -59,7 +59,9 @@ Note: this section was copied and pasted from the [gcsa](https://google-calendar
 3. [Create a OAuth client ID credential](https://developers.google.com/workspace/guides/create-credentials#create_a_oauth_client_id_credential)
 and download the `credentials.json` file
 
-4. Put downloaded `credentials.json` file into `~/.config/gcal_notifier/default`
+4. Move your downloaded `credentials.json` file into place. If you keep
+`$XDG_CONFIG_HOME` defined, then use `$XDG_CONFIG_HOME/gcal_notifier/default`;
+otherwise use `~/.config/gcal_notifier/default`.
 
 See more options in [Authentication](https://google-calendar-simple-api.readthedocs.io/en/latest/authentication.html#authentication).
 
@@ -92,8 +94,10 @@ That's it! You're all set up!
 Configuration
 -------------
 
-You can configure some things for now (and hopefully more later), and all the
-configurations are done in a file that sits in `~/.config/gcal_notifier/config.ini`
+You can configure some things for now (and hopefully more later).
+On systems where `$XDG_CONFIG_HOME` is defined, the config file is
+`$XDG_CONFIG_HOME/gcal_notifier/config.ini`; the fallback location for all
+other systems is `~/.config/gcal_notifier/config.ini`.
 
 A sample of every configuration supported is:
 ```ini
@@ -114,7 +118,10 @@ name = NAME1
 calendar = example@gmail.com
 # Reminders to your events, up to 5 integers separated by commas. Default is None
 default_reminders = 10,0
-# Path to the credentials file. Default is ~/.config/gcal_notifier/credentials.json
+# Path to the credentials file. Default is:
+# $XDG_CONFIG_HOME/gcal_notifier/credentials_file.json
+# if $XDG_CONFIG_HOME is defined; otherwise:
+# ~/.config/gcal_notifier/credentials.json
 # credentials = ~/.config/gcal_notifier/credentials_file.json
 
 [CALENDAR2]

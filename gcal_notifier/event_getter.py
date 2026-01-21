@@ -1,5 +1,6 @@
 from configparser import ConfigParser
 from datetime import datetime
+from os.path import expandvars
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
@@ -109,7 +110,7 @@ class SimpleGCalendarGetter:
         """
         try:
             return GoogleCalendar(
-                calendar=calendar, credentials_path=credentials
+                calendar=calendar, credentials_path=expandvars(credentials)
             )
         except RefreshError:
             (credentials.parent / "token.pickle").unlink()
