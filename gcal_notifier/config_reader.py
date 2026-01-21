@@ -61,6 +61,7 @@ def merge_general(config: ConfigParser) -> Dict[str, Any]:
         "print_calendar_names": config["GENERAL"].getboolean(
             "print_calendar_names"
         ),
+        "print_date_format": config["GENERAL"].get("print_date_format"),
     }
     return {
         **GENERAL_PARAMS,

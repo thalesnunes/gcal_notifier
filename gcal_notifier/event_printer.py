@@ -210,9 +210,10 @@ class SimpleGCalendarPrinter:
             for day, events in self.agenda.items():
                 if len(events) > 0:
                     print()
+                    date_format = self.general_params["print_date_format"]
                     print(
                         self.create_msg(
-                            day.strftime("%d/%m - %A:"), "brightwhite"
+                            day.strftime(date_format), "brightwhite"
                         )
                     )
                     for event in events:
