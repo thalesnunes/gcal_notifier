@@ -112,6 +112,12 @@ order_by = startTime
 notification_sound = true
 # Custom notification sound, if you would like to choose (it has to be a wav file).
 notification_sound_path = ~/Music/my_notification.wav
+# Do you want the `print` subcommand to include calendar names?
+print_calendar_names = False
+# What date format would you prefer the `print` subcommand to use? Note that
+# percent signs must be doubled. For format codes, refer to:
+# https://docs.python.org/3/library/datetime.html#strftime-and-strptime-format-codes
+print_date_format = %%d/%%m - %%A
 
 [CALENDAR1]
 # Name given to the calendar. Default is 'Calendar'
