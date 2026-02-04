@@ -49,17 +49,23 @@ options:
 ### Credentials
 
 For all of this to work, you have to create your credentials for each account
-you want to use.
+you want to use. (N.B. _Multiple calendars in the same account can share
+the same credentials._)
+
 Note: this section was copied and pasted from the [gcsa](https://google-calendar-simple-api.readthedocs.io/en/latest/getting_started.html) README.
 
 1. Create a new [Google Cloud Platform (GCP) project](https://developers.google.com/workspace/guides/create-project)
 
-2. Configure the [OAuth consent screen](https://developers.google.com/workspace/guides/create-credentials#configure_the_oauth_consent_screen)
+2. [Enable the Google Calendar API](https://console.developers.google.com/apis/api/calendar-json.googleapis.com/)
 
-3. [Create a OAuth client ID credential](https://developers.google.com/workspace/guides/create-credentials#create_a_oauth_client_id_credential)
+3. Configure the [OAuth consent screen](https://developers.google.com/workspace/guides/create-credentials#configure_the_oauth_consent_screen)
+
+4. Click on “Audience”, and add yourself as a test user.
+
+5. [Create a OAuth client ID credential](https://developers.google.com/workspace/guides/create-credentials#create_a_oauth_client_id_credential)
 and download the `credentials.json` file
 
-4. Put downloaded `credentials.json` file into `~/.config/gcal_notifier/default`
+6. Put downloaded `credentials.json` file into `~/.config/gcal_notifier/default`
 
 See more options in [Authentication](https://google-calendar-simple-api.readthedocs.io/en/latest/authentication.html#authentication).
 
@@ -71,8 +77,8 @@ This will create token.pickle file in the same folder.
 Setting Up
 ----------
 
-After having your `credentials.json` file(s), you can run `gcal_notifier get`
-to see if everything works properly.
+After having your `credentials.json` file(s), and configuration in place (see
+below), you can run `gcal_notifier get` to see if everything works properly.
 
 If it does, it's time to set up your cron jobs.
 
