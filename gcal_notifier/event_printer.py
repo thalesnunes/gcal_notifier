@@ -93,11 +93,7 @@ class SimpleGCalendarPrinter:
             str: Message formated with color, if self.use_color is True
         """
         if self.use_color:
-            msg = (
-                self.get_colorcode(colorname)
-                + msg
-                + self.get_colorcode("default")
-            )
+            msg = self.get_colorcode(colorname) + msg + self.get_colorcode("default")
         return msg
 
     def get_text_from_event(self, event: Dict[str, Any]) -> str:
@@ -111,15 +107,11 @@ class SimpleGCalendarPrinter:
         """
 
         if event["end"] - event["start"] < timedelta(days=1):
-            display_txt = (
-                f'{event["start"].strftime("%H:%M")} - {event["summary"]}'
-            )
+            display_txt = f"{event['start'].strftime('%H:%M')} - {event['summary']}"
         else:
-            display_txt = f'{event["summary"]}'
+            display_txt = f"{event['summary']}"
 
-        default_color = self.calendar_params[event["cal_code"]].get(
-            "default_color", "default"
-        )
+        default_color = self.calendar_params[event["cal_code"]].get("default_color", "default")
         event_color = GCAL_COLORS.get(event["color_id"], default_color)
         colored = self.create_msg(display_txt, event_color)
 
@@ -160,12 +152,13 @@ class SimpleGCalendarPrinter:
                 self.fmt_cal[weekday] = []
 
             self.fmt_cal[weekday].append(
-                self.create_msg(day.strftime("%d"), "brightwhite")
+                self.create_msg(
+                    day.strftime("%d"),
+                    "brightred" if day == date.today() else "brightwhite",
+                )
             )
             for event in events:
-                self.fmt_cal[weekday][-1] += "\n" + self.get_text_from_event(
-                    event
-                )
+                self.fmt_cal[weekday][-1] += "\n" + self.get_text_from_event(event)
 
         self.fill_event_matrix()
 
@@ -199,7 +192,7 @@ class SimpleGCalendarPrinter:
                 for event in events:
                     if event["start"] > datetime.now().astimezone():
                         print(
-                            f'{event["start"].strftime("%a, %H:%M")} ({event["calendar"]}) - {event["summary"]}'
+                            f"{event['start'].strftime('%a, %H:%M')} ({event['calendar']}) - {event['summary']}"
                         )
                         next_event_found = True
                         break
@@ -207,11 +200,7 @@ class SimpleGCalendarPrinter:
             for day, events in self.agenda.items():
                 if len(events) > 0:
                     print()
-                    print(
-                        self.create_msg(
-                            day.strftime("%d/%m - %A:"), "brightwhite"
-                        )
-                    )
+                    print(self.create_msg(day.strftime("%d/%m - %A:"), "brightwhite"))
                     for event in events:
                         print(" ", self.get_text_from_event(event))
         else:

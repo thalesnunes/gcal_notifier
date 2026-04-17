@@ -77,9 +77,7 @@ def transform_events(events: List[Event]) -> List[Dict[str, Any]]:
     return json_events
 
 
-def save_events(
-    events: List[Event], file_path: Path = CACHE / "events_notify.json"
-) -> None:
+def save_events(events: List[Event], file_path: Path = CACHE / "events_notify.json") -> None:
     """Save events to a cache file.
 
     Args:

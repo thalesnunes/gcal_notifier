@@ -50,19 +50,13 @@ class SimpleGCalendarGetter:
         self.calendars = {}
 
         event_params = {
-            k: v
-            for k, v in self.general_params.items()
-            if k in ["order_by", "single_events"]
+            k: v for k, v in self.general_params.items() if k in ["order_by", "single_events"]
         }
         event_params["time_min"], event_params["time_max"] = period
 
         for cal_code, params in self.calendar_params.items():
-            conn_params = {
-                k: params[k] for k in params if k in ["calendar", "credentials"]
-            }
-            self.calendars[cal_code] = self.make_conn(**conn_params).get_events(
-                **event_params
-            )
+            conn_params = {k: params[k] for k in params if k in ["calendar", "credentials"]}
+            self.calendars[cal_code] = self.make_conn(**conn_params).get_events(**event_params)
 
     def set_reminders(self, event: Event) -> None:
         """Set reminders to event.
@@ -108,9 +102,7 @@ class SimpleGCalendarGetter:
             GoogleCalendar: GoogleCalendar client
         """
         try:
-            return GoogleCalendar(
-                calendar=calendar, credentials_path=credentials
-            )
+            return GoogleCalendar(calendar=calendar, credentials_path=credentials)
         except RefreshError:
             (credentials.parent / "token.pickle").unlink()
             run_notify(

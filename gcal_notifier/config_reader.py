@@ -52,12 +52,8 @@ def merge_general(config: ConfigParser) -> Dict[str, Any]:
     user_params = {
         "single_events": config["GENERAL"].getboolean("single_events"),
         "order_by": config["GENERAL"].get("order_by"),
-        "notification_sound": config["GENERAL"].getboolean(
-            "notification_sound"
-        ),
-        "notification_sound_path": config["GENERAL"].getpath(
-            "notification_sound_path"
-        ),
+        "notification_sound": config["GENERAL"].getboolean("notification_sound"),
+        "notification_sound_path": config["GENERAL"].getpath("notification_sound_path"),
     }
     return {
         **GENERAL_PARAMS,
@@ -75,11 +71,7 @@ def merge_calendars(config: ConfigParser) -> Dict[str, Any]:
         Dict[str, Any]: Dict with all the calendars' params
     """
 
-    calendar_names = [
-        calendar
-        for calendar in config.sections()
-        if calendar.startswith("CALENDAR")
-    ]
+    calendar_names = [calendar for calendar in config.sections() if calendar.startswith("CALENDAR")]
     calendar_params = {}
     for calendar in calendar_names:
         cal = config[calendar]
@@ -108,9 +100,7 @@ def init_config(
         Tuple[Dict[str, Any], Dict[str, Any]]: (General, Calendar)
     """
 
-    config = ConfigParser(
-        converters={"list": parse_int_list, "path": parse_path}
-    )
+    config = ConfigParser(converters={"list": parse_int_list, "path": parse_path})
     config.read(config_path)
     validate_config(config)
     general_params = merge_general(config)

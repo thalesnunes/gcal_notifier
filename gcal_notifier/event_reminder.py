@@ -39,9 +39,9 @@ class SimpleGCalendarNotifier:
             for reminder in event["reminders"]:
                 if now < start - timedelta(minutes=reminder):
                     continue
-                elif now >= start - timedelta(
-                    minutes=reminder
-                ) and now < start - timedelta(minutes=reminder - 1):
+                elif now >= start - timedelta(minutes=reminder) and now < start - timedelta(
+                    minutes=reminder - 1
+                ):
                     cmd = self.create_command(event, event.get("cmd", CMD))
                     run_notify(
                         cmd,

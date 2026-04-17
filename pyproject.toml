@@ -1,69 +1,57 @@
-[tool.poetry]
+[project]
 name = "gcal_notifier"
 version = "1.1.7"
 description = "A simple and lightweight GoogleCalendar notifier for Linux"
-authors = ["Thales Nunes <thalesaknunes22@gmail.com>"]
-license = "MIT"
-
 readme = "README.md"
-
-repository = "https://github.com/thalesnunes/gcal_notifier"
-
-classifiers=[
+requires-python = ">=3.10,<4.0"
+license = { text = "MIT" }
+authors = [
+    { name = "Thales Nunes", email = "thalesaknunes22@gmail.com" }
+]
+classifiers = [
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.6",
-    "Programming Language :: Python :: 3.7",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
+]
+dependencies = [
+    "gcsa>=1.2.0",
+    "simpleaudio>=1.0.4",
 ]
 
-[tool.poetry.dependencies]
-python = "^3.6.2"
+[project.urls]
+Repository = "https://github.com/thalesnunes/gcal_notifier"
 
-gcsa = "^1.2.0"
-simpleaudio = "^1.0.4"
-
-[tool.poetry.group.dev.dependencies]
-pytest = "^6.2.5"
-mypy = "^0.910"
-isort = "^5.9.3"
-black = "^21.9b0"
-
-[tool.poetry.scripts]
+[project.scripts]
 gcal_notifier = "gcal_notifier.main:gcal_notifier"
 
-[tool.isort]
-multi_line_output = 3
-include_trailing_comma = true
-force_grid_wrap = 0
-use_parentheses = true
-line_length = 80
+[dependency-groups]
+dev = [
+    "pytest>=6.2.5",
+    "ruff>=0.3.0",
+]
 
-[tool.black]
-line-length = 80
-target-version = ["py38"]
-include = '\.pyi?$'
-exclude = '''
+[tool.ruff]
+line-length = 100
+target-version = "py38"
 
-(
-  /(
-      \.eggs         # exclude a few common directories in the
-    | \.git          # root of the project
-    | \.hg
-    | \.mypy_cache
-    | \.tox
-    | \.venv
-    | _build
-    | buck-out
-    | build
-    | dist
-  )/
-)
-'''
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes (bugs/logic errors)
+    "I",   # isort (import sorting)
+    "B",   # flake8-bugbear (common design issues)
+    "UP",  # pyupgrade (keeps syntax modern)
+    "C4",  # flake8-comprehensions
+    "ARG", # flake8-unused-arguments
+]
+ignore = [
+    "E501", # Line too long (Ruff formatter handles this, no need to be strict)
+]
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"

@@ -18,7 +18,7 @@ def load_events_file(
         List[Dict[str, Any]]: List of events as dictionaries
     """
 
-    with open(path, "r") as json_file:
+    with open(path) as json_file:
         json_events = json.load(json_file)
 
     return json_events

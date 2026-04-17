@@ -34,9 +34,7 @@ def run_getter(
     save_events(getter.events, file_path=CACHE / "events_print.json")
 
 
-def run_notifier(
-    general_params: Dict[str, Any], calendar_params: Dict[str, Any]
-) -> None:
+def run_notifier(general_params: Dict[str, Any], calendar_params: Dict[str, Any]) -> None:
     """Run SimpleGCalendarNotifier with user configs.
 
     Args:
@@ -44,9 +42,7 @@ def run_notifier(
         calendar_params (Dict[str, Any]): Calendar params
     """
     saved_events = load_saved_events(CACHE / "events_notify.json")
-    notifier = SimpleGCalendarNotifier(
-        saved_events, general_params, calendar_params
-    )
+    notifier = SimpleGCalendarNotifier(saved_events, general_params, calendar_params)
     notifier.search_reminders()
 
 

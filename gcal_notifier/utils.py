@@ -85,8 +85,6 @@ def define_period(period: str = "day") -> Tuple[datetime, datetime]:
 
     elif period.startswith("m"):
         time_min = today.replace(day=1)
-        time_max = today.replace(
-            day=calendar.monthrange(today.year, today.month)[1]
-        )
+        time_max = today.replace(day=calendar.monthrange(today.year, today.month)[1])
 
     return time_min.date(), time_max.date()
