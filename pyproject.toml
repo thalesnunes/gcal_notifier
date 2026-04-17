@@ -1,6 +1,6 @@
 [project]
 name = "gcal_notifier"
-version = "1.1.7"
+version = "1.1.8"
 description = "A simple and lightweight GoogleCalendar notifier for Linux"
 readme = "README.md"
 requires-python = ">=3.10,<4.0"
